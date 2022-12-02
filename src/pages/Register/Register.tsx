@@ -50,7 +50,7 @@ export default function Register() {
       <div className='container'>
         <div className='grid grid-cols-1 py-10 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
-            <form onSubmit={onSubmit} className='rounded bg-white p-10 shadow-sm'>
+            <form onSubmit={onSubmit} className='rounded bg-white p-10 shadow-sm' noValidate>
               <div className='text-2xl'>Đăng ký</div>
               <InputField
                 name='email'
@@ -79,7 +79,10 @@ export default function Register() {
                 autoComplete='on'
               />
               <div className='mt-2'>
-                <button className='w-full bg-red-500 py-4 px-2 text-center text-sm uppercase text-white hover:bg-red-600'>
+                <button
+                  type='submit'
+                  className='w-full bg-red-500 py-4 px-2 text-center text-sm uppercase text-white hover:bg-red-600'
+                >
                   Đăng ký
                 </button>
               </div>
