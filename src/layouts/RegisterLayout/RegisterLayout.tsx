@@ -1,4 +1,4 @@
-import Footer from 'src/components/Footer'
+import Footer from 'src/components/AppFooter'
 import RegisterHeader from 'src/components/RegisterHeader'
 
 interface Props {

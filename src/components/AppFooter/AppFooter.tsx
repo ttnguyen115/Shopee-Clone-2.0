@@ -1,4 +1,4 @@
-export default function Footer() {
+export default function AppFooter() {
   return (
     <footer className='bg-neutral-100 py-16'>
       <div className='container'>
