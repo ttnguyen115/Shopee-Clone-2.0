@@ -16,7 +16,7 @@ import { isAxiosUnprocessableEntityError, schema, Schema } from 'src/utils'
 type FormData = Schema
 
 export default function Register() {
-  const { setIsAuthenticated } = React.useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = React.useContext(AppContext)
   const navigate = useNavigate()
 
   const {
@@ -35,8 +35,12 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     const body = _.omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
-      onSuccess: () => {
+      onSuccess: (mutationResponse) => {
+        const {
+          data: { data: userResponse }
+        } = mutationResponse
         setIsAuthenticated(true)
+        setProfile(userResponse.user)
         navigate(AppRoutes.APP_HOMEPAGE)
       },
       onError: (error) => {
@@ -93,7 +97,7 @@ export default function Register() {
                   type='submit'
                   isLoading={registerAccountMutation.isLoading}
                   disabled={registerAccountMutation.isLoading}
-                  className='w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
+                  className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
                 >
                   Đăng ký
                 </Button>

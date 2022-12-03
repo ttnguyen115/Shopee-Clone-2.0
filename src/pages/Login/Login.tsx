@@ -16,7 +16,7 @@ type FormData = Omit<Schema, 'confirm_password'>
 const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
-  const { setIsAuthenticated } = React.useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = React.useContext(AppContext)
   const navigate = useNavigate()
 
   const {
@@ -34,8 +34,13 @@ export default function Login() {
 
   const onSubmit = handleSubmit((data) => {
     loginAccountMutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (mutationResponse) => {
+        console.log(mutationResponse)
+        const {
+          data: { data: userResponse }
+        } = mutationResponse
         setIsAuthenticated(true)
+        setProfile(userResponse.user)
         navigate(AppRoutes.APP_HOMEPAGE)
       },
       onError: (error) => {
@@ -83,7 +88,7 @@ export default function Login() {
                   type='submit'
                   isLoading={loginAccountMutation.isLoading}
                   disabled={loginAccountMutation.isLoading}
-                  className='w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
+                  className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
                 >
                   Đăng nhập
                 </Button>

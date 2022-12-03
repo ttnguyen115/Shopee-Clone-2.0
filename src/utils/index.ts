@@ -1,4 +1,4 @@
-import { clearAccessTokenFromLS, getAccessTokenFromLS, saveAccessTokenToLS } from './auth'
+import { clearLocalStorage, getAccessTokenFromLS, getProfileFromLS, setAccessTokenToLS, setProfileFromLS } from './auth'
 import { getRules, schema, Schema } from './rules'
 import { isAxiosError, isAxiosUnprocessableEntityError } from './utils'
 
@@ -7,9 +7,11 @@ export {
   getRules,
   isAxiosUnprocessableEntityError,
   isAxiosError,
-  saveAccessTokenToLS,
-  clearAccessTokenFromLS,
-  getAccessTokenFromLS
+  setAccessTokenToLS,
+  clearLocalStorage,
+  getAccessTokenFromLS,
+  getProfileFromLS,
+  setProfileFromLS
 }
 // export variables
 export { schema }

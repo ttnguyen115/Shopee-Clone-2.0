@@ -15,10 +15,13 @@ import { AppContext } from 'src/contexts/app'
 import { logout } from 'src/services/apis'
 
 export default function AppHeader() {
-  const { isAuthenticated, setIsAuthenticated } = React.useContext(AppContext)
+  const { isAuthenticated, profile, setIsAuthenticated, setProfile } = React.useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: logout,
-    onSuccess: () => setIsAuthenticated(false)
+    onSuccess: () => {
+      setIsAuthenticated(false)
+      setProfile(null)
+    }
   })
   const handleLogout = () => logoutMutation.mutate()
 
@@ -71,7 +74,7 @@ export default function AppHeader() {
               <div className='mr-2 h-6 w-6 flex-shrink-0'>
                 <UserCircleSvg />
               </div>
-              <div>ttnguyen115</div>
+              <div>{profile?.name || profile?.email}</div>
             </Popover>
           )}
           {!isAuthenticated && (
@@ -89,7 +92,7 @@ export default function AppHeader() {
 
         <div className='mt-4 grid grid-cols-12 items-end gap-4'>
           <Link to={AppRoutes.APP_HOMEPAGE} className='col-span-2'>
-            <ShopeeLogoSvg className='h-11 fill-white' />
+            <ShopeeLogoSvg className='h-11 w-full fill-white' />
           </Link>
           <form className='col-span-9'>
             <div className='flex rounded-sm bg-white p-1'>
