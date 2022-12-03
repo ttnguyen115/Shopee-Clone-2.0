@@ -1,3 +1,4 @@
 import useRouteElements from './useRouteElements'
+import useToggle from './useToggle'
 
-export default useRouteElements
+export { useRouteElements, useToggle }
