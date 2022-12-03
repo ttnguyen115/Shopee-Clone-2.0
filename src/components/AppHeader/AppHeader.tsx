@@ -8,6 +8,8 @@ import { ReactComponent as ShopeeLogoSvg } from 'src/assets/shopee.svg'
 import { ReactComponent as UserCircleSvg } from 'src/assets/user-circle.svg'
 import Popover from '../Popover'
 
+import { AppRoutes } from 'src/constants'
+
 export default function AppHeader() {
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
@@ -35,13 +37,13 @@ export default function AppHeader() {
             renderPopover={
               <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
                 <Link
-                  to='/'
+                  to={AppRoutes.APP_PROFILE}
                   className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
                 >
                   Tài khoản của tôi
                 </Link>
                 <Link
-                  to='/'
+                  to={AppRoutes.APP_DEFAULT}
                   className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
                 >
                   Đơn mua
@@ -60,7 +62,7 @@ export default function AppHeader() {
         </div>
 
         <div className='mt-4 grid grid-cols-12 items-end gap-4'>
-          <Link to='/' className='col-span-2'>
+          <Link to={AppRoutes.APP_HOMEPAGE} className='col-span-2'>
             <ShopeeLogoSvg className='h-11 fill-white' />
           </Link>
           <form className='col-span-9'>
@@ -169,7 +171,7 @@ export default function AppHeader() {
                 </div>
               }
             >
-              <Link to='/'>
+              <Link to={AppRoutes.APP_DEFAULT}>
                 <CartSvg />
               </Link>
             </Popover>

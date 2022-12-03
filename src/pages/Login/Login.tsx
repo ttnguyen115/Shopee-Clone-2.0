@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 import InputField from 'src/components/InputField'
+import { AppRoutes } from 'src/constants'
 import { loginAccount } from 'src/services/apis'
 import type { ResponseApi } from 'src/types/utils'
 import { isAxiosUnprocessableEntityError, schema, Schema } from 'src/utils'
@@ -78,7 +79,7 @@ export default function Login() {
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-slate-300'>Bạn chưa có tài khoản?</span>
-                <Link className='ml-1 text-red-400' to='/register'>
+                <Link className='ml-1 text-red-400' to={AppRoutes.APP_REGISTER}>
                   {' '}
                   Đăng ký
                 </Link>
