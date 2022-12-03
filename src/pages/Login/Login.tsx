@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
+import Button from 'src/components/Button'
 
 import InputField from 'src/components/InputField'
 import { AppRoutes } from 'src/constants'
@@ -78,12 +79,14 @@ export default function Login() {
                 autoComplete='on'
               />
               <div className='mt-3'>
-                <button
+                <Button
                   type='submit'
-                  className='w-full bg-red-500 py-4 px-2 text-center text-sm uppercase text-white hover:bg-red-600'
+                  isLoading={loginAccountMutation.isLoading}
+                  disabled={loginAccountMutation.isLoading}
+                  className='w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
                 >
                   Đăng nhập
-                </button>
+                </Button>
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-slate-300'>Bạn chưa có tài khoản?</span>
