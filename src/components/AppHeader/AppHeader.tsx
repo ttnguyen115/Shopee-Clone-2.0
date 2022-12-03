@@ -14,7 +14,6 @@ export default function AppHeader() {
       <div className='container'>
         <div className='flex justify-end'>
           <Popover
-            initialOpen
             as='span'
             className='flex cursor-pointer items-center py-1 hover:text-gray-300'
             renderPopover={
@@ -77,10 +76,103 @@ export default function AppHeader() {
               </button>
             </div>
           </form>
-          <div className='col-span-1'>
-            <Link to='/'>
-              <CartSvg />
-            </Link>
+          <div className='col-span-1 justify-self-end'>
+            <Popover
+              renderPopover={
+                <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
+                  <div className='p-2'>
+                    <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                    <div className='mt-5'>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
+                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
+                            laborum quos consectetur dolores. Distinctio, architecto!
+                          </div>
+                          <div className='ml-2 flex-shrink-0'>
+                            <div className='text-orange'>đ460.000</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
+                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
+                            laborum quos consectetur dolores. Distinctio, architecto!
+                          </div>
+                          <div className='ml-2 flex-shrink-0'>
+                            <div className='text-orange'>đ460.000</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
+                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
+                            laborum quos consectetur dolores. Distinctio, architecto!
+                          </div>
+                          <div className='ml-2 flex-shrink-0'>
+                            <div className='text-orange'>đ460.000</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
+                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
+                            laborum quos consectetur dolores. Distinctio, architecto!
+                          </div>
+                          <div className='ml-2 flex-shrink-0'>
+                            <div className='text-orange'>đ460.000</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
+                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
+                            laborum quos consectetur dolores. Distinctio, architecto!
+                          </div>
+                          <div className='ml-2 flex-shrink-0'>
+                            <div className='text-orange'>đ460.000</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='mt-6 flex items-center justify-between'>
+                      <div className='text-xs capitalize text-gray-500'>Thêm hàng vào giỏ</div>
+                      <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
+                        Xem giỏ hàng
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <Link to='/'>
+                <CartSvg />
+              </Link>
+            </Popover>
           </div>
         </div>
       </div>
