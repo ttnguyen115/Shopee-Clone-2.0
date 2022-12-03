@@ -1,3 +1,3 @@
-import { registerAccount, loginAccount } from './auth'
+import { registerAccount, loginAccount, logout } from './auth'
 
-export { registerAccount, loginAccount }
+export { registerAccount, loginAccount, logout }
