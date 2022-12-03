@@ -24,9 +24,11 @@
     "react-hook-form": "^7.40.0",
     "react-router-dom": "^6.4.3",
     "react-toastify": "^9.1.1",
+    "vite-plugin-svgr": "^2.2.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@honkhonk/vite-plugin-svgr": "^1.1.0",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
