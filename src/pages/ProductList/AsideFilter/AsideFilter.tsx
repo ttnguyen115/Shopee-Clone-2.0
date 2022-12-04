@@ -14,7 +14,8 @@ export default function AsideFilter() {
   return (
     <div className='py-4'>
       <Link to={AppRoutes.APP_DEFAULT} className='flex items-center font-bold'>
-        <AsideFilterSvg /> Tất cả danh mục
+        <AsideFilterSvg />
+        <span className='ml-2'>Tất cả danh mục</span>
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <ul>
@@ -30,7 +31,8 @@ export default function AsideFilter() {
         </li>
       </ul>
       <Link to={AppRoutes.APP_DEFAULT} className='mt-4 flex items-center font-bold uppercase'>
-        <SearchFilterSvg x={0} y={0} stroke='currentColor' /> Bộ lọc tìm kiếm
+        <SearchFilterSvg x={0} y={0} stroke='currentColor' />
+        <span className='ml-2'>Bộ lọc tìm kiếm</span>
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
