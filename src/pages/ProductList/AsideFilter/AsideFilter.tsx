@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import clsx from 'clsx'
+import { createSearchParams, Link } from 'react-router-dom'
 
 import { ReactComponent as AsideFilterSvg } from 'src/assets/aside-filter.svg'
 import { ReactComponent as ChevronRightSvg } from 'src/assets/chevron-right-filled.svg'
@@ -9,26 +10,45 @@ import Button from 'src/components/Button'
 import InputField from 'src/components/InputField'
 
 import { AppRoutes } from 'src/constants'
+import type { Category } from 'src/types/category'
+import { QueryConfig } from '../ProductList'
 
-export default function AsideFilter() {
+interface Props {
+  queryConfig: QueryConfig
+  categories: Category[]
+}
+
+export default function AsideFilter({ queryConfig, categories }: Props) {
+  const { category } = queryConfig
+
   return (
     <div className='py-4'>
-      <Link to={AppRoutes.APP_DEFAULT} className='flex items-center font-bold'>
+      <Link to={AppRoutes.APP_DEFAULT} className={clsx('flex items-center font-bold', !category && 'text-orange')}>
         <AsideFilterSvg />
         <span className='ml-2'>Tất cả danh mục</span>
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <ul>
-        <li className='py-2 pl-2'>
-          <Link to={AppRoutes.APP_DEFAULT} className='relative px-2 font-semibold text-orange'>
-            <ChevronRightSvg className='absolute top-1 left-[-10px] h-2 w-2 fill-orange' /> Thời trang nam
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={AppRoutes.APP_DEFAULT} className='relative px-2'>
-            Thời trang nam
-          </Link>
-        </li>
+        {categories.map((categoryItem) => {
+          const isActiveCategory = category === categoryItem._id
+          return (
+            <li className='py-2 pl-2' key={categoryItem._id}>
+              <Link
+                to={{
+                  pathname: AppRoutes.APP_DEFAULT,
+                  search: createSearchParams({
+                    ...queryConfig,
+                    category: categoryItem._id
+                  }).toString()
+                }}
+                className={clsx('relative px-2', isActiveCategory && 'font-semibold text-orange')}
+              >
+                {isActiveCategory && <ChevronRightSvg className='absolute top-1 left-[-10px] h-2 w-2 fill-orange' />}{' '}
+                {categoryItem.name}
+              </Link>
+            </li>
+          )
+        })}
       </ul>
       <Link to={AppRoutes.APP_DEFAULT} className='mt-4 flex items-center font-bold uppercase'>
         <SearchFilterSvg x={0} y={0} stroke='currentColor' />
