@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
 import * as yup from 'yup'
 
@@ -76,7 +77,33 @@ export const schema = yup.object({
     .required('Nhập lại mật khẩu là bắt buộc')
     .min(6, 'Độ dài từ 6 - 160 ký tự')
     .max(160, 'Độ dài từ 6 - 160 ký tự')
-    .oneOf([yup.ref('password')], 'Mật khẩu không khớp')
+    .oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
+
+  price_min: yup.string().test({
+    name: 'price-not-allowed',
+    message: 'Giá không phù hợp',
+    test: function (value) {
+      const price_min = value
+      const { price_max } = this.parent as { price_min: string; price_max: string }
+      if (!_.isEmpty(price_min) && !_.isEmpty(price_max)) {
+        return Number(price_max) >= Number(price_min)
+      }
+      return !_.isEmpty(price_min) || !_.isEmpty(price_max)
+    }
+  }),
+
+  price_max: yup.string().test({
+    name: 'price-not-allowed',
+    message: 'Giá không phù hợp',
+    test: function (value) {
+      const price_max = value
+      const { price_min } = this.parent as { price_min: string; price_max: string }
+      if (!_.isEmpty(price_min) && !_.isEmpty(price_max)) {
+        return Number(price_max) >= Number(price_min)
+      }
+      return !_.isEmpty(price_min) || !_.isEmpty(price_max)
+    }
+  }),
 })
 
 export type Schema = yup.InferType<typeof schema>
