@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom'
+import ProductRating from 'src/components/ProductRating'
 import { AppRoutes } from 'src/constants'
 
-import { ReactComponent as StarFilledGraySvg } from 'src/assets/star-filled-gray.svg'
-import { ReactComponent as StarFilledSvg } from 'src/assets/star-filled.svg'
 import type { Product as ProductType } from 'src/types/product'
 import { currencyFormatter, formatNumberToSocialStyle } from 'src/utils'
 
@@ -32,14 +31,7 @@ export default function ProductItem({ product }: Props) {
             </div>
           </div>
           <div className='mt-3 flex items-center justify-end'>
-            <div className='flex items-center'>
-              <div className='relative'>
-                <div className='absolute top-0 left-0 h-full overflow-hidden' style={{ width: '50%' }}>
-                  <StarFilledSvg className='h-3 w-3 fill-yellow-300 text-yellow-300' />
-                </div>
-                <StarFilledGraySvg className='h-3 w-3 fill-current text-gray-300' />
-              </div>
-            </div>
+            <ProductRating rating={rating} />
             <div className='ml-2 text-sm'>
               <span>{formatNumberToSocialStyle(sold)}</span>
               <span className='ml-1'>Đã bán</span>
