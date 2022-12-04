@@ -1,12 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { ReactComponent as CartSvg } from 'src/assets/cart.svg'
 import { ReactComponent as ChevronDownSvg } from 'src/assets/chevron-down.svg'
-import { ReactComponent as GlobalSvg } from 'src/assets/global.svg'
-import { ReactComponent as SearchSvg } from 'src/assets/search.svg'
-import { ReactComponent as ShopeeLogoSvg } from 'src/assets/shopee.svg'
-import { ReactComponent as UserCircleSvg } from 'src/assets/user-circle.svg'
-import Popover from '../Popover'
 
 import { useMutation } from '@tanstack/react-query'
 import React from 'react'

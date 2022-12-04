@@ -6,10 +6,10 @@ import { ReactComponent as ChevronLeftSvg } from 'src/assets/chevron-left.svg'
 import { ReactComponent as ChevronRightSvg } from 'src/assets/chevron-right.svg'
 
 import type { ProductListConfig } from 'src/types/product'
-import { QueryConfig } from '../ProductList'
 
 import { AppRoutes } from 'src/constants'
 import { order as orderConstants, sortBy } from 'src/constants/product'
+import { QueryConfig } from 'src/pages/ProductList'
 
 interface Props {
   queryConfig: QueryConfig

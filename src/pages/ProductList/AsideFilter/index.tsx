@@ -11,7 +11,7 @@ import InputField from 'src/components/InputField'
 
 import { AppRoutes } from 'src/constants'
 import type { Category } from 'src/types/category'
-import { QueryConfig } from '../ProductList'
+import { QueryConfig } from 'src/pages/ProductList'
 
 interface Props {
   queryConfig: QueryConfig
