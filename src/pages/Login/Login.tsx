@@ -8,7 +8,7 @@ import Button from 'src/components/Button'
 import InputField from 'src/components/InputField'
 import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
-import { loginAccount } from 'src/services/apis'
+import { authApi } from 'src/services/apis'
 import type { ErrorResponse } from 'src/types/utils'
 import { isAxiosUnprocessableEntityError, schema, Schema } from 'src/utils'
 
@@ -29,7 +29,7 @@ export default function Login() {
   })
 
   const loginAccountMutation = useMutation({
-    mutationFn: (body: FormData) => loginAccount(body)
+    mutationFn: (body: FormData) => authApi.loginAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {

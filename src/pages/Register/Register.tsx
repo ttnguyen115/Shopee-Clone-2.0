@@ -9,7 +9,7 @@ import Button from 'src/components/Button'
 import InputField from 'src/components/InputField'
 import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
-import { registerAccount } from 'src/services/apis'
+import { authApi } from 'src/services/apis'
 import type { ErrorResponse } from 'src/types/utils'
 import { isAxiosUnprocessableEntityError, schema, Schema } from 'src/utils'
 
@@ -29,7 +29,7 @@ export default function Register() {
   })
 
   const registerAccountMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {

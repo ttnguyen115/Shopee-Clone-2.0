@@ -1,3 +1,6 @@
-import { registerAccount, loginAccount, logout } from './auth'
+import authApi from './auth'
+import productApi from './product'
 
-export { registerAccount, loginAccount, logout }
+import { UrlPaths } from './urlPaths'
+
+export { authApi, productApi, UrlPaths }

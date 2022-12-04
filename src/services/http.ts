@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 import { HttpStatusCode } from 'src/constants'
 import type { AuthResponse } from 'src/types/auth'
 import { clearLocalStorage, getAccessTokenFromLS, setAccessTokenToLS, setProfileFromLS } from 'src/utils'
+import { UrlPaths } from './apis'
 
 class Http {
   instance: AxiosInstance
@@ -36,7 +37,7 @@ class Http {
       (response) => {
         const { url } = response.config
 
-        if (url === '/login' || url === '/register') {
+        if (url === UrlPaths.URL_LOGIN || url === UrlPaths.URL_REGISTER) {
           const responseData = response.data as AuthResponse
           const {
             data: { access_token, user }
