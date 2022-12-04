@@ -3,29 +3,32 @@ import { AppRoutes } from 'src/constants'
 
 import { ReactComponent as StarFilledGraySvg } from 'src/assets/star-filled-gray.svg'
 import { ReactComponent as StarFilledSvg } from 'src/assets/star-filled.svg'
+import type { Product as ProductType } from 'src/types/product'
+import { currencyFormatter, formatNumberToSocialStyle } from 'src/utils'
 
-export default function ProductItem() {
+interface Props {
+  product: ProductType
+}
+
+export default function ProductItem({ product }: Props) {
+  const { image, description, price, price_before_discount, rating, sold, name } = product
+
   return (
     <Link to={AppRoutes.APP_DEFAULT}>
       <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md'>
         <div className='relative w-full pt-[100%]'>
-          <img
-            src='https://picsum.photos/200/300'
-            alt='product'
-            className='absolute top-0 left-0 h-full w-full bg-white object-cover'
-          />
+          <img src={image} alt={name} className='absolute top-0 left-0 h-full w-full bg-white object-cover' />
         </div>
         <div className='overflow-hidden p-2'>
-          <div className='min-h-[2rem] text-xs line-clamp-2'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, officiis. Rem quidem facilis natus
-            nostrum asperiores velit veritatis maiores adipisci suscipit, dolores earum vel tenetur odit atque dolorem
-            possimus fugiat!
-          </div>
-          <div className='mt-3 flex items-center'>
-            <div className='max-w-[50%] truncate text-gray-500 line-through'>đ 12.000</div>
-            <div className='ml-1 truncate text-orange'>
+          <div className='min-h-[2rem] text-xs line-clamp-2'>{description || name}</div>
+          <div className='mt-3'>
+            <div className='max-w-[50%] text-gray-500 line-through'>
               <span className='text-xs'>đ</span>
-              <span className='ml-1'>2.000</span>
+              <span className='ml-1'>{currencyFormatter(price_before_discount)}</span>
+            </div>
+            <div className='ml-1 text-orange'>
+              <span className='text-xs'>đ</span>
+              <span className='ml-1'>{currencyFormatter(price)}</span>
             </div>
           </div>
           <div className='mt-3 flex items-center justify-end'>
@@ -38,7 +41,7 @@ export default function ProductItem() {
               </div>
             </div>
             <div className='ml-2 text-sm'>
-              <span>5.66k</span>
+              <span>{formatNumberToSocialStyle(sold)}</span>
               <span className='ml-1'>Đã bán</span>
             </div>
           </div>
