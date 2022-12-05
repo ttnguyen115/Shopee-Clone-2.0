@@ -12,8 +12,8 @@ import { authApi } from 'src/services/apis'
 import type { ErrorResponse } from 'src/types/utils'
 import { isAxiosUnprocessableEntityError, schema, Schema } from 'src/utils'
 
-type FormData = Omit<Schema, 'confirm_password'>
-const loginSchema = schema.omit(['confirm_password'])
+type FormData = Pick<Schema, 'email' | 'password'>
+const loginSchema = schema.pick(['email', 'password'])
 
 export default function Login() {
   const { setIsAuthenticated, setProfile } = React.useContext(AppContext)
@@ -35,7 +35,6 @@ export default function Login() {
   const onSubmit = handleSubmit((data) => {
     loginAccountMutation.mutate(data, {
       onSuccess: (mutationResponse) => {
-        console.log(mutationResponse)
         const {
           data: { data: userResponse }
         } = mutationResponse

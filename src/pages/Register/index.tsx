@@ -4,16 +4,18 @@ import _ from 'lodash'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from 'src/components/Button'
 
+import Button from 'src/components/Button'
 import InputField from 'src/components/InputField'
+
 import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
 import { authApi } from 'src/services/apis'
 import type { ErrorResponse } from 'src/types/utils'
 import { isAxiosUnprocessableEntityError, schema, Schema } from 'src/utils'
 
-type FormData = Schema
+type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
+const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 export default function Register() {
   const { setIsAuthenticated, setProfile } = React.useContext(AppContext)
@@ -25,7 +27,7 @@ export default function Register() {
     setError,
     formState: { errors }
   } = useForm<FormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(registerSchema)
   })
 
   const registerAccountMutation = useMutation({

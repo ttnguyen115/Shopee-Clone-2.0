@@ -6,3 +6,8 @@ export interface ErrorResponse<Data> {
   message: string
   data?: Data
 }
+
+// `-?` to avoid undefined value of optional key. Example: key?:
+export type NoUndefinedField<T> = {
+  [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
+}

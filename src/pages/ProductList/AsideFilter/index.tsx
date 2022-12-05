@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { Controller, useForm } from 'react-hook-form'
-import { createSearchParams, Link } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 
 import { ReactComponent as AsideFilterSvg } from 'src/assets/aside-filter.svg'
 import { ReactComponent as ChevronRightSvg } from 'src/assets/chevron-right-filled.svg'
@@ -14,22 +14,21 @@ import NumberInputField from 'src/components/NumberInputField'
 import { AppRoutes } from 'src/constants'
 import { QueryConfig } from 'src/pages/ProductList'
 import type { Category } from 'src/types/category'
-import { schema } from 'src/utils'
+import type { NoUndefinedField } from 'src/types/utils'
+import { Schema, schema } from 'src/utils'
 
 interface Props {
   queryConfig: QueryConfig
   categories: Category[]
 }
 
-type FormData = {
-  price_min: string
-  price_max: string
-}
+type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
 
 const priceSchema = schema.pick(['price_min', 'price_max'])
 
 export default function AsideFilter({ queryConfig, categories }: Props) {
   const { category } = queryConfig
+  const navigate = useNavigate()
   const {
     control,
     handleSubmit,
@@ -43,8 +42,15 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
     resolver: yupResolver(priceSchema)
   })
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
+  const onSubmit = handleSubmit(({ price_max, price_min }) => {
+    navigate({
+      pathname: AppRoutes.APP_DEFAULT,
+      search: createSearchParams({
+        ...queryConfig,
+        price_min,
+        price_max
+      }).toString()
+    })
   })
 
   return (
