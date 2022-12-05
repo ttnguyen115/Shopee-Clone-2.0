@@ -6,11 +6,12 @@ import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { ReactComponent as AsideFilterSvg } from 'src/assets/aside-filter.svg'
 import { ReactComponent as ChevronRightSvg } from 'src/assets/chevron-right-filled.svg'
 import { ReactComponent as SearchFilterSvg } from 'src/assets/search-filter.svg'
-import { ReactComponent as StarFilledSvg } from 'src/assets/star-filled.svg'
 
 import Button from 'src/components/Button'
 import NumberInputField from 'src/components/NumberInputField'
+import RatingStars from '../RatingStars'
 
+import _ from 'lodash'
 import { AppRoutes } from 'src/constants'
 import { QueryConfig } from 'src/pages/ProductList'
 import type { Category } from 'src/types/category'
@@ -23,7 +24,6 @@ interface Props {
 }
 
 type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
-
 const priceSchema = schema.pick(['price_min', 'price_max'])
 
 export default function AsideFilter({ queryConfig, categories }: Props) {
@@ -42,7 +42,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
     resolver: yupResolver(priceSchema)
   })
 
-  const onSubmit = handleSubmit(({ price_max, price_min }) => {
+  const onSubmit = handleSubmit(({ price_max, price_min }) =>
     navigate({
       pathname: AppRoutes.APP_DEFAULT,
       search: createSearchParams({
@@ -51,7 +51,15 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
         price_max
       }).toString()
     })
-  })
+  )
+
+  const handleRemoveAllFilters = () =>
+    navigate({
+      pathname: AppRoutes.APP_DEFAULT,
+      search: createSearchParams(
+        _.omit(queryConfig, ['price_min', 'price_max', 'rating_filter', 'category'])
+      ).toString()
+    })
 
   return (
     <div className='py-4'>
@@ -143,30 +151,12 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       </div>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='text-sm'>Đánh giá</div>
-      <ul className='my-3'>
-        <li className='pl2 py-1'>
-          <Link to={AppRoutes.APP_DEFAULT} className='flex items-center text-sm'>
-            {Array(5)
-              .fill(0)
-              .map((_, index) => (
-                <StarFilledSvg key={index} className='mr-1 h-4 w-4' />
-              ))}
-            trở lên
-          </Link>
-        </li>
-        <li className='pl2 py-1'>
-          <Link to={AppRoutes.APP_DEFAULT} className='flex items-center text-sm'>
-            {Array(5)
-              .fill(0)
-              .map((_, index) => (
-                <StarFilledSvg key={index} className='mr-1 h-4 w-4' />
-              ))}
-            trở lên
-          </Link>
-        </li>
-      </ul>
+      <RatingStars queryConfig={queryConfig} />
       <div className='my-4 h-[1px] bg-gray-300' />
-      <Button className='mt-3 flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>
+      <Button
+        onClick={handleRemoveAllFilters}
+        className='mt-3 flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'
+      >
         Xoá tất cả
       </Button>
     </div>
