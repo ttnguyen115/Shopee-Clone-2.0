@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 
+import type { Product } from 'src/types/product'
+
 import { productApi } from 'src/services/apis'
-import { currencyFormatter, formatNumberToSocialStyle } from 'src/utils'
+import { currencyFormatter, formatNumberToSocialStyle, saleRate } from 'src/utils'
 
 import { ReactComponent as AddToCartSvg } from 'src/assets/add-to-cart.svg'
 import { ReactComponent as ChevronLeftSvg } from 'src/assets/chevron-left.svg'
@@ -13,36 +16,70 @@ import { ReactComponent as PlusSvg } from 'src/assets/plus.svg'
 
 import NumberInputField from 'src/components/NumberInputField'
 import ProductRating from 'src/components/ProductRating'
-import { saleRate } from 'src/utils/utils'
 
-DOMPurify
 export default function ProductDetail() {
   const { id } = useParams()
+  const [currentIndexImages, setCurrentIndexImages] = React.useState([0, 5])
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   })
   const product = productDetailData?.data.data
+  const currentImages = React.useMemo(
+    () => (product ? product.images.slice(...currentIndexImages) : []),
+    [product, currentIndexImages]
+  )
+  const [activeImage, setActiveImage] = React.useState('')
+
+  React.useEffect(() => {
+    if (product && product.images.length > 0) {
+      setActiveImage(product.images[0])
+    }
+  }, [product])
+
+  const handleActiveImage = (img: string) => {
+    setActiveImage(img)
+  }
+
+  const handleNextImage = () => {
+    if (currentIndexImages[1] < (product as Product).images.length) {
+      setCurrentIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
+    }
+  }
+
+  const handlePrevImage = () => {
+    if (currentIndexImages[0] > 0) {
+      setCurrentIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
+    }
+  }
+
   if (!product) return null
-  const { image, name, images, rating, sold, price, price_before_discount, quantity, description } = product
+  const { name, rating, sold, price, price_before_discount, quantity, description } = product
 
   return (
     <div className='bg-gray-200 py-6'>
-      <div className='bg-white p-4 shadow'>
-        <div className='container'>
+      <div className='container'>
+        <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
               <div className='relative w-full pt-[100%] shadow'>
-                <img src={image} alt={name} className='absolute top-0 left-0 h-full w-full bg-white object-cover' />
+                <img
+                  src={activeImage}
+                  alt={name}
+                  className='absolute top-0 left-0 h-full w-full bg-white object-cover'
+                />
               </div>
               <div className='relative mt-4 grid grid-cols-5 gap-1'>
-                <button className='absolute top-1/2 left-0 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'>
+                <button
+                  className='absolute top-1/2 left-0 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
+                  onClick={handlePrevImage}
+                >
                   <ChevronLeftSvg className='h-5 w-5' />
                 </button>
-                {images.slice(0, 4).map((img, index) => {
-                  const isActive = index === 0
+                {currentImages.map((img, index) => {
+                  const isActive = img === activeImage
                   return (
-                    <div className='relative w-full pt-[100%]' key={index}>
+                    <div onMouseEnter={() => handleActiveImage(img)} className='relative w-full pt-[100%]' key={index}>
                       <img
                         src={img}
                         alt={`${name}-${index}`}
@@ -52,7 +89,10 @@ export default function ProductDetail() {
                     </div>
                   )
                 })}
-                <button className='absolute top-1/2 right-0 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'>
+                <button
+                  className='absolute top-1/2 right-0 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
+                  onClick={handleNextImage}
+                >
                   <ChevronRightSvg className='h-5 w-5' />
                 </button>
               </div>
@@ -112,8 +152,8 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className='mt-8 bg-white p-4 shadow'>
-        <div className='container'>
+      <div className='container'>
+        <div className='mt-8 bg-white p-4 shadow'>
           <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
           <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
             <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
