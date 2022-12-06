@@ -1,10 +1,11 @@
 import React from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
+
 import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
 
 import { MainLayout, RegisterLayout } from 'src/layouts'
-import { Login, ProductList, Profile, Register } from 'src/pages'
+import { Login, ProductDetail, ProductList, Profile, Register } from 'src/pages'
 
 function ProtectedRoute() {
   const { isAuthenticated } = React.useContext(AppContext)
@@ -24,6 +25,15 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <ProductList />
+        </MainLayout>
+      )
+    },
+    {
+      path: AppRoutes.APP_PRODUCT_DETAIL,
+      index: true,
+      element: (
+        <MainLayout>
+          <ProductDetail />
         </MainLayout>
       )
     },

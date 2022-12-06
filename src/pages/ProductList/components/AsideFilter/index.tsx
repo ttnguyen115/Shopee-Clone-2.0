@@ -9,7 +9,7 @@ import { ReactComponent as SearchFilterSvg } from 'src/assets/search-filter.svg'
 
 import Button from 'src/components/Button'
 import NumberInputField from 'src/components/NumberInputField'
-import RatingStars from '../RatingStars'
+import RatingStars from 'src/pages/ProductList/components/RatingStars'
 
 import _ from 'lodash'
 import { AppRoutes } from 'src/constants'
