@@ -19,6 +19,7 @@ import ProductRating from 'src/components/ProductRating'
 
 export default function ProductDetail() {
   const { id } = useParams()
+  const imageRef = React.useRef<HTMLImageElement>(null)
   const [currentIndexImages, setCurrentIndexImages] = React.useState([0, 5])
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
@@ -53,6 +54,34 @@ export default function ProductDetail() {
     }
   }
 
+  const handleZoomImage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const image = imageRef.current as HTMLImageElement
+    const { style, naturalHeight, naturalWidth } = image
+
+    // Solution 1
+    // Avoid 'Event Bubble' => add className point-events-none to img tag
+    image.classList.add('pointer-events-none')
+    const { offsetX, offsetY } = event.nativeEvent
+
+    // Solution 2: regardless be able to handle 'Event Bubble', this can be handled zoom
+    // const offsetX = event.pageX - (rect.x + window.scrollX)
+    // const offsetY = event.pageY - (rect.y + window.scrollY)
+
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.width)
+    style.top = top + 'px'
+    style.left = left + 'px'
+    style.width = naturalWidth + 'px'
+    style.height = naturalHeight + 'px'
+    style.maxWidth = 'unset'
+  }
+
+  // Handle reset image size after mouse moved out
+  const handleRemoveZoom = () => {
+    imageRef.current?.removeAttribute('style')
+  }
+
   if (!product) return null
   const { name, rating, sold, price, price_before_discount, quantity, description } = product
 
@@ -62,10 +91,15 @@ export default function ProductDetail() {
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
-              <div className='relative w-full pt-[100%] shadow'>
+              <div
+                className='relative w-full overflow-hidden pt-[100%] shadow'
+                onMouseMove={handleZoomImage}
+                onMouseLeave={handleRemoveZoom}
+              >
                 <img
                   src={activeImage}
                   alt={name}
+                  ref={imageRef}
                   className='absolute top-0 left-0 h-full w-full bg-white object-cover'
                 />
               </div>
