@@ -3,6 +3,8 @@ import { getRules, schema, Schema } from './rules'
 import {
   currencyFormatter,
   formatNumberToSocialStyle,
+  generateNameId,
+  getIdFromNameId,
   isAxiosError,
   isAxiosUnprocessableEntityError,
   saleRate
@@ -20,7 +22,9 @@ export {
   setProfileFromLS,
   formatNumberToSocialStyle,
   currencyFormatter,
-  saleRate
+  saleRate,
+  generateNameId,
+  getIdFromNameId
 }
 // export variables
 export { schema }

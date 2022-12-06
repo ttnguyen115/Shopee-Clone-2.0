@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import type { Product } from 'src/types/product'
 
 import { productApi } from 'src/services/apis'
-import { currencyFormatter, formatNumberToSocialStyle, saleRate } from 'src/utils'
+import { currencyFormatter, formatNumberToSocialStyle, getIdFromNameId, saleRate } from 'src/utils'
 
 import { ReactComponent as AddToCartSvg } from 'src/assets/add-to-cart.svg'
 import { ReactComponent as ChevronLeftSvg } from 'src/assets/chevron-left.svg'
@@ -18,7 +18,8 @@ import NumberInputField from 'src/components/NumberInputField'
 import ProductRating from 'src/components/ProductRating'
 
 export default function ProductDetail() {
-  const { id } = useParams()
+  const { nameId } = useParams()
+  const id = getIdFromNameId(nameId as string)
   const imageRef = React.useRef<HTMLImageElement>(null)
   const [currentIndexImages, setCurrentIndexImages] = React.useState([0, 5])
   const { data: productDetailData } = useQuery({
