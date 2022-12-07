@@ -1,4 +1,7 @@
-import { Link } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 
 import { ReactComponent as CartSvg } from 'src/assets/cart.svg'
 import { ReactComponent as ChevronDownSvg } from 'src/assets/chevron-down.svg'
@@ -8,13 +11,26 @@ import { ReactComponent as ShopeeLogoSvg } from 'src/assets/shopee.svg'
 import { ReactComponent as UserCircleSvg } from 'src/assets/user-circle.svg'
 import Popover from '../Popover'
 
-import { useMutation } from '@tanstack/react-query'
-import React from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import _ from 'lodash'
 import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
+import { useQueryConfig } from 'src/hooks'
 import { authApi } from 'src/services/apis'
+import { schema, Schema } from 'src/utils'
+
+type FormData = Pick<Schema, 'name'>
+const nameSchema = schema.pick(['name'])
 
 export default function AppHeader() {
+  const navigate = useNavigate()
+  const queryConfig = useQueryConfig()
+  const { register, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      name: ''
+    },
+    resolver: yupResolver(nameSchema)
+  })
   const { isAuthenticated, profile, setIsAuthenticated, setProfile } = React.useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: authApi.logout,
@@ -24,6 +40,27 @@ export default function AppHeader() {
     }
   })
   const handleLogout = () => logoutMutation.mutate()
+
+  const onSubmitSearch = handleSubmit((data) => {
+    const config = queryConfig.order
+      ? _.omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          // omit filters based on for each business requirements
+          ['order', 'sort_by']
+        )
+      : {
+          ...queryConfig,
+          name: data.name
+        }
+
+    navigate({
+      pathname: AppRoutes.APP_DEFAULT,
+      search: createSearchParams(config).toString()
+    })
+  })
 
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
@@ -94,13 +131,13 @@ export default function AppHeader() {
           <Link to={AppRoutes.APP_HOMEPAGE} className='col-span-2'>
             <ShopeeLogoSvg className='h-11 w-full fill-white' />
           </Link>
-          <form className='col-span-9'>
+          <form className='col-span-9' onSubmit={onSubmitSearch}>
             <div className='flex rounded-sm bg-white p-1'>
               <input
                 type='text'
-                name='search'
                 placeholder='Tìm kiếm sản phẩm'
                 className='flex-grow border-none bg-transparent px-3 py-2 text-black outline-none'
+                {...register('name')}
               />
               <button className='flex-shrink-0 rounded-sm bg-orange py-2 px-6 hover:opacity-90'>
                 <SearchSvg />
