@@ -6,14 +6,12 @@ import { useParams } from 'react-router-dom'
 import { ReactComponent as AddToCartSvg } from 'src/assets/add-to-cart.svg'
 import { ReactComponent as ChevronLeftSvg } from 'src/assets/chevron-left.svg'
 import { ReactComponent as ChevronRightSvg } from 'src/assets/chevron-right.svg'
-import { ReactComponent as MinusSvg } from 'src/assets/minus.svg'
-import { ReactComponent as PlusSvg } from 'src/assets/plus.svg'
-import NumberInputField from 'src/components/NumberInputField'
 import ProductRating from 'src/components/ProductRating'
 import ProductItem from 'src/pages/ProductList/components/ProductItem'
 
 import type { Product, ProductListConfig } from 'src/types/product'
 
+import QuantityController from 'src/components/QuantityController'
 import { queryTime } from 'src/constants'
 import { productApi } from 'src/services/apis'
 import { currencyFormatter, formatNumberToSocialStyle, getIdFromNameId, saleRate } from 'src/utils'
@@ -24,6 +22,7 @@ export default function ProductDetail() {
   const imageRef = React.useRef<HTMLImageElement>(null)
   const [currentIndexImages, setCurrentIndexImages] = React.useState([0, 5])
   const [activeImage, setActiveImage] = React.useState('')
+  const [buyCount, setBuyCount] = React.useState(1)
 
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
@@ -94,6 +93,10 @@ export default function ProductDetail() {
   // Handle reset image size after mouse moved out
   const handleRemoveZoom = () => {
     imageRef.current?.removeAttribute('style')
+  }
+
+  const handleBuyCount = (value: number) => {
+    setBuyCount(value)
   }
 
   if (!product) return null
@@ -171,20 +174,13 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <div className='capitalize text-gray-500'>Số lượng</div>
-                <div className='ml-10 flex items-center'>
-                  <button className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'>
-                    <MinusSvg className='h-4 w-4' />
-                  </button>
-                  <NumberInputField
-                    value={1}
-                    className=''
-                    classNameError='hidden'
-                    classNameInput='h-8 w-14 border-t border-b border-gray-300 text-center p-1 outline-none'
-                  />
-                  <button className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'>
-                    <PlusSvg className='h-4 w-4' />
-                  </button>
-                </div>
+                <QuantityController
+                  onDecrease={handleBuyCount}
+                  onIncrease={handleBuyCount}
+                  onType={handleBuyCount}
+                  value={buyCount}
+                  max={quantity}
+                />
                 <div className='ml-6 text-sm text-gray-500'>{quantity} sản phẩm có sẵn</div>
               </div>
               <div className='mt-8 flex items-center'>

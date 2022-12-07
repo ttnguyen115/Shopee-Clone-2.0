@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface NumberInputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
   classNameInput?: string
   classNameError?: string
@@ -9,7 +9,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const NUMBER_REGEX = /^\d+$/
 
-const NumberInputField = React.forwardRef<HTMLInputElement, Props>(function NumberInput(
+const NumberInputField = React.forwardRef<HTMLInputElement, NumberInputFieldProps>(function NumberInput(
   {
     errorMessage,
     className,
