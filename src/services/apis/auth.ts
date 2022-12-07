@@ -1,6 +1,6 @@
+import http from 'src/services'
 import type { AuthResponse } from 'src/types/auth'
-import http from '../http'
-import { UrlPaths } from './urlPaths';
+import { UrlPaths } from './urlPaths'
 
 const authApi = {
   registerAccount(body: { email: string; password: string }) {

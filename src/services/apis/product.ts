@@ -1,6 +1,6 @@
 import type { Product, ProductList, ProductListConfig } from 'src/types/product'
 import type { SuccessResponse } from 'src/types/utils'
-import http from '../http'
+import http from 'src/services'
 import { UrlPaths } from './urlPaths'
 
 const productApi = {
