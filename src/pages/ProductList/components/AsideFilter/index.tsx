@@ -13,9 +13,9 @@ import RatingStars from 'src/pages/ProductList/components/RatingStars'
 
 import _ from 'lodash'
 import { AppRoutes } from 'src/constants'
-import { QueryConfig } from 'src/pages/ProductList'
 import type { Category } from 'src/types/category'
 import type { NoUndefinedField } from 'src/types/utils'
+import type { QueryConfig } from 'src/hooks/useQueryConfig'
 import { Schema, schema } from 'src/utils'
 
 interface Props {

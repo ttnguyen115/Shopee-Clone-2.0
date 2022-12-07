@@ -3,35 +3,48 @@ import DOMPurify from 'dompurify'
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import type { Product } from 'src/types/product'
-
-import { productApi } from 'src/services/apis'
-import { currencyFormatter, formatNumberToSocialStyle, getIdFromNameId, saleRate } from 'src/utils'
-
 import { ReactComponent as AddToCartSvg } from 'src/assets/add-to-cart.svg'
 import { ReactComponent as ChevronLeftSvg } from 'src/assets/chevron-left.svg'
 import { ReactComponent as ChevronRightSvg } from 'src/assets/chevron-right.svg'
 import { ReactComponent as MinusSvg } from 'src/assets/minus.svg'
 import { ReactComponent as PlusSvg } from 'src/assets/plus.svg'
-
 import NumberInputField from 'src/components/NumberInputField'
 import ProductRating from 'src/components/ProductRating'
+import ProductItem from 'src/pages/ProductList/components/ProductItem'
+
+import type { Product, ProductListConfig } from 'src/types/product'
+
+import { queryTime } from 'src/constants'
+import { productApi } from 'src/services/apis'
+import { currencyFormatter, formatNumberToSocialStyle, getIdFromNameId, saleRate } from 'src/utils'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
   const imageRef = React.useRef<HTMLImageElement>(null)
   const [currentIndexImages, setCurrentIndexImages] = React.useState([0, 5])
+  const [activeImage, setActiveImage] = React.useState('')
+
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   })
+
   const product = productDetailData?.data.data
   const currentImages = React.useMemo(
     () => (product ? product.images.slice(...currentIndexImages) : []),
     [product, currentIndexImages]
   )
-  const [activeImage, setActiveImage] = React.useState('')
+
+  const queryConfig: ProductListConfig = { limit: '20', page: '1', category: product?.category._id }
+  const { data: productsData } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => {
+      return productApi.getProducts(queryConfig)
+    },
+    enabled: Boolean(product),
+    staleTime: queryTime.PRODUCT_STALE_TIME
+  })
 
   React.useEffect(() => {
     if (product && product.images.length > 0) {
@@ -187,12 +200,28 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className='container'>
-        <div className='mt-8 bg-white p-4 shadow'>
-          <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
-          <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
-            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
+      <div className='mt-8'>
+        <div className='container'>
+          <div className='mt-8 bg-white p-4 shadow'>
+            <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
+            <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
+              <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
+            </div>
           </div>
+        </div>
+      </div>
+      <div className='mt-8'>
+        <div className='container'>
+          <div className='uppercase text-gray-400'>Có thể bạn cũng thích</div>
+          {productsData && (
+            <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+              {productsData.data.data.products.map((product) => (
+                <div className='col-span-1' key={product._id}>
+                  <ProductItem product={product} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

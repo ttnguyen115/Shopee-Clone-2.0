@@ -1,14 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { useQueryConfig } from 'src/hooks'
-import { categoryApi, productApi } from 'src/services/apis'
-import type { ProductListConfig } from 'src/types/product'
-import type { QueryConfig } from 'src/hooks/useQueryConfig'
-
 import Pagination from 'src/components/Pagination'
 import AsideFilter from 'src/pages/ProductList/components/AsideFilter'
 import ProductItem from 'src/pages/ProductList/components/ProductItem'
 import SortProductList from 'src/pages/ProductList/components/SortProductList'
+
+import { queryTime } from 'src/constants'
+import { useQueryConfig } from 'src/hooks'
+import type { QueryConfig } from 'src/hooks/useQueryConfig'
+import { categoryApi, productApi } from 'src/services/apis'
+import type { ProductListConfig } from 'src/types/product'
 
 export default function ProductList() {
   const queryConfig: QueryConfig = useQueryConfig()
@@ -18,7 +19,8 @@ export default function ProductList() {
     queryFn: () => {
       return productApi.getProducts(queryConfig as ProductListConfig)
     },
-    keepPreviousData: true
+    keepPreviousData: true,
+    staleTime: queryTime.PRODUCT_STALE_TIME
   })
 
   const { data: categoriesData } = useQuery({
