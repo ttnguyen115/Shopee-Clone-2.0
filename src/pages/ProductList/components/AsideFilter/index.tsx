@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
-import { Controller, useForm } from 'react-hook-form'
+import _ from 'lodash'
+import { useForm } from 'react-hook-form'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 
 import { ReactComponent as AsideFilterSvg } from 'src/assets/aside-filter.svg'
@@ -8,14 +9,13 @@ import { ReactComponent as ChevronRightSvg } from 'src/assets/chevron-right-fill
 import { ReactComponent as SearchFilterSvg } from 'src/assets/search-filter.svg'
 
 import Button from 'src/components/Button'
-import NumberInputField from 'src/components/NumberInputField'
+import { InputFieldV2 } from 'src/components/InputFieldV2'
 import RatingStars from 'src/pages/ProductList/components/RatingStars'
 
-import _ from 'lodash'
 import { AppRoutes } from 'src/constants'
+import type { QueryConfig } from 'src/hooks/useQueryConfig'
 import type { Category } from 'src/types/category'
 import type { NoUndefinedField } from 'src/types/utils'
-import type { QueryConfig } from 'src/hooks/useQueryConfig'
 import { Schema, schema } from 'src/utils'
 
 interface Props {
@@ -99,45 +99,29 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
         <div>Khoảng giá</div>
         <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
-            <Controller
+            <InputFieldV2
               control={control}
               name='price_min'
-              render={({ field }) => {
-                return (
-                  <NumberInputField
-                    type='text'
-                    className='grow'
-                    placeholder='đ TỪ'
-                    classNameInput='w-full border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm rounded-sm'
-                    classNameError='hidden'
-                    {...field}
-                    onChange={(event) => {
-                      field.onChange(event)
-                      trigger('price_max')
-                    }}
-                  />
-                )
+              type='number'
+              className='grow'
+              placeholder='đ TỪ'
+              classNameInput='w-full border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm rounded-sm'
+              classNameError='hidden'
+              onChange={() => {
+                trigger('price_max')
               }}
             />
             <div className='mx-2 mt-2 shrink-0'> - </div>
-            <Controller
+            <InputFieldV2
               control={control}
               name='price_max'
-              render={({ field }) => {
-                return (
-                  <NumberInputField
-                    type='text'
-                    className='grow'
-                    placeholder='đ ĐẾN'
-                    classNameInput='w-full border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm rounded-sm'
-                    classNameError='hidden'
-                    {...field}
-                    onChange={(event) => {
-                      field.onChange(event)
-                      trigger('price_min')
-                    }}
-                  />
-                )
+              type='number'
+              className='grow'
+              placeholder='đ TỪ'
+              classNameInput='w-full border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm rounded-sm'
+              classNameError='hidden'
+              onChange={() => {
+                trigger('price_min')
               }}
             />
           </div>
