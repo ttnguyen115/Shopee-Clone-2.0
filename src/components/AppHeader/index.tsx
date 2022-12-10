@@ -17,6 +17,7 @@ import Popover from 'src/components/Popover'
 import { AppRoutes, PurchasesStatus } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
 import { useQueryConfig } from 'src/hooks'
+import { queryClient } from 'src/main'
 import { authApi, purchaseApi } from 'src/services/apis'
 import { currencyFormatter, schema, Schema } from 'src/utils'
 
@@ -40,6 +41,7 @@ export default function AppHeader() {
     onSuccess: () => {
       setIsAuthenticated(false)
       setProfile(null)
+      queryClient.removeQueries({ queryKey: ['purchases', { status: PurchasesStatus.IN_CART }] })
     }
   })
   const handleLogout = () => logoutMutation.mutate()
@@ -71,7 +73,8 @@ export default function AppHeader() {
   // query is not inactive => not be called => not need to set stale: Infinity
   const { data: purchaseInCartData } = useQuery({
     queryKey: ['purchases', { status: PurchasesStatus.IN_CART }],
-    queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.IN_CART })
+    queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.IN_CART }),
+    enabled: isAuthenticated
   })
   const purchaseInCart = purchaseInCartData?.data.data
 
@@ -188,9 +191,12 @@ export default function AppHeader() {
                             : ''}{' '}
                           Thêm hàng vào giỏ
                         </div>
-                        <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
+                        <Link
+                          to={AppRoutes.APP_CART}
+                          className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
+                        >
                           Xem giỏ hàng
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   ) : (
@@ -202,11 +208,13 @@ export default function AppHeader() {
                 </div>
               }
             >
-              <Link to={AppRoutes.APP_DEFAULT} className='relative'>
+              <Link to={AppRoutes.APP_CART} className='relative'>
                 <CartSvg />
-                <span className='absolute top-[-5px] right-[-10px] rounded-full bg-white px-[9px] py-[1px] text-xs text-orange'>
-                  {purchaseInCart?.length}
-                </span>
+                {purchaseInCart && (
+                  <span className='absolute top-[-5px] right-[-10px] rounded-full bg-white px-[9px] py-[1px] text-xs text-orange'>
+                    {purchaseInCart?.length}
+                  </span>
+                )}
               </Link>
             </Popover>
           </div>

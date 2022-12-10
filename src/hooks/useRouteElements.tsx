@@ -5,7 +5,7 @@ import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
 
 import { MainLayout, RegisterLayout } from 'src/layouts'
-import { Login, ProductDetail, ProductList, Profile, Register } from 'src/pages'
+import { Cart, Login, ProductDetail, ProductList, Profile, Register } from 'src/pages'
 
 function ProtectedRoute() {
   const { isAuthenticated } = React.useContext(AppContext)
@@ -46,6 +46,14 @@ export default function useRouteElements() {
           element: (
             <MainLayout>
               <Profile />
+            </MainLayout>
+          )
+        },
+        {
+          path: AppRoutes.APP_CART,
+          element: (
+            <MainLayout>
+              <Cart />
             </MainLayout>
           )
         }
