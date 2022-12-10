@@ -1,4 +1,4 @@
-const enum PurchaseStatus {
+const enum PurchasesStatus {
   IN_CART = -1,
   ALL = 0,
   WAIT_FOR_CONFIRMATION = 1,
@@ -8,4 +8,4 @@ const enum PurchaseStatus {
   CANCELED = 5
 }
 
-export default PurchaseStatus
+export default PurchasesStatus

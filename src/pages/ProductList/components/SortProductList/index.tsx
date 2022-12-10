@@ -5,11 +5,10 @@ import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { ReactComponent as ChevronLeftSvg } from 'src/assets/chevron-left.svg'
 import { ReactComponent as ChevronRightSvg } from 'src/assets/chevron-right.svg'
 
-import type { ProductListConfig } from 'src/types/product'
 import type { QueryConfig } from 'src/hooks/useQueryConfig'
+import type { ProductListConfig } from 'src/types/product'
 
-import { AppRoutes } from 'src/constants'
-import { order as orderConstants, sortBy } from 'src/constants/product'
+import { AppRoutes, order as orderConstants, sortBy } from 'src/constants'
 
 interface Props {
   queryConfig: QueryConfig

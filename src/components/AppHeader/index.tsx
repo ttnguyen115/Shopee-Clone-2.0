@@ -1,4 +1,6 @@
-import { useMutation } from '@tanstack/react-query'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import _ from 'lodash'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
@@ -6,21 +8,22 @@ import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { ReactComponent as CartSvg } from 'src/assets/cart.svg'
 import { ReactComponent as ChevronDownSvg } from 'src/assets/chevron-down.svg'
 import { ReactComponent as GlobalSvg } from 'src/assets/global.svg'
+import emptyCartPng from 'src/assets/img/empty-cart.png'
 import { ReactComponent as SearchSvg } from 'src/assets/search.svg'
 import { ReactComponent as ShopeeLogoSvg } from 'src/assets/shopee.svg'
 import { ReactComponent as UserCircleSvg } from 'src/assets/user-circle.svg'
-import Popover from '../Popover'
+import Popover from 'src/components/Popover'
 
-import { yupResolver } from '@hookform/resolvers/yup'
-import _ from 'lodash'
-import { AppRoutes } from 'src/constants'
+import { AppRoutes, PurchasesStatus } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
 import { useQueryConfig } from 'src/hooks'
-import { authApi } from 'src/services/apis'
-import { schema, Schema } from 'src/utils'
+import { authApi, purchaseApi } from 'src/services/apis'
+import { currencyFormatter, schema, Schema } from 'src/utils'
 
 type FormData = Pick<Schema, 'name'>
 const nameSchema = schema.pick(['name'])
+
+const MAX_SHOWING_PURCHASES_IN_CART = 5
 
 export default function AppHeader() {
   const navigate = useNavigate()
@@ -61,6 +64,16 @@ export default function AppHeader() {
       search: createSearchParams(config).toString()
     })
   })
+
+  // when routing pages, AppHeader is only re-rendered
+  // Not unmount and mount again
+  // Exception: logout => RegisterLayout
+  // query is not inactive => not be called => not need to set stale: Infinity
+  const { data: purchaseInCartData } = useQuery({
+    queryKey: ['purchases', { status: PurchasesStatus.IN_CART }],
+    queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.IN_CART })
+  })
+  const purchaseInCart = purchaseInCartData?.data.data
 
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
@@ -148,97 +161,52 @@ export default function AppHeader() {
             <Popover
               renderPopover={
                 <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
-                  <div className='p-2'>
-                    <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
-                    <div className='mt-5'>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
-                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
-                            laborum quos consectetur dolores. Distinctio, architecto!
-                          </div>
-                          <div className='ml-2 flex-shrink-0'>
-                            <div className='text-orange'>đ460.000</div>
-                          </div>
-                        </div>
+                  {purchaseInCart ? (
+                    <div className='p-2'>
+                      <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                      <div className='mt-5'>
+                        {purchaseInCart
+                          .slice(0, MAX_SHOWING_PURCHASES_IN_CART)
+                          .map(({ product: { _id, name, image, price } }) => (
+                            <div className='mt-2 flex py-2 hover:bg-gray-100' key={_id}>
+                              <div className='flex-shrink-0'>
+                                <img src={image} alt={name} className='h11 w-11 object-cover' />
+                              </div>
+                              <div className='ml-2 flex-grow overflow-hidden'>
+                                <div className='truncate'>{name}</div>
+                                <div className='ml-2 flex-shrink-0'>
+                                  <div className='text-orange'>đ {currencyFormatter(price)}</div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                       </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
+                      <div className='mt-6 flex items-center justify-between'>
+                        <div className='text-xs capitalize text-gray-500'>
+                          {purchaseInCart.length > MAX_SHOWING_PURCHASES_IN_CART
+                            ? purchaseInCart.length - MAX_SHOWING_PURCHASES_IN_CART
+                            : ''}{' '}
+                          Thêm hàng vào giỏ
                         </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
-                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
-                            laborum quos consectetur dolores. Distinctio, architecto!
-                          </div>
-                          <div className='ml-2 flex-shrink-0'>
-                            <div className='text-orange'>đ460.000</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
-                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
-                            laborum quos consectetur dolores. Distinctio, architecto!
-                          </div>
-                          <div className='ml-2 flex-shrink-0'>
-                            <div className='text-orange'>đ460.000</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
-                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
-                            laborum quos consectetur dolores. Distinctio, architecto!
-                          </div>
-                          <div className='ml-2 flex-shrink-0'>
-                            <div className='text-orange'>đ460.000</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img src='https://picsum.photos/200' alt='product' className='h11 w-11 object-cover' />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum odio nesciunt id, alias
-                            repellendus recusandae expedita. Nam sequi expedita voluptate iste adipisci facere ullam
-                            laborum quos consectetur dolores. Distinctio, architecto!
-                          </div>
-                          <div className='ml-2 flex-shrink-0'>
-                            <div className='text-orange'>đ460.000</div>
-                          </div>
-                        </div>
+                        <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
+                          Xem giỏ hàng
+                        </button>
                       </div>
                     </div>
-                    <div className='mt-6 flex items-center justify-between'>
-                      <div className='text-xs capitalize text-gray-500'>Thêm hàng vào giỏ</div>
-                      <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
-                        Xem giỏ hàng
-                      </button>
+                  ) : (
+                    <div className='flex h-[300px] w-[300px] flex-col items-center justify-center p-2'>
+                      <img src={emptyCartPng} alt='empty cart' className='h-24 w-24' />
+                      <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                     </div>
-                  </div>
+                  )}
                 </div>
               }
             >
-              <Link to={AppRoutes.APP_DEFAULT}>
+              <Link to={AppRoutes.APP_DEFAULT} className='relative'>
                 <CartSvg />
+                <span className='absolute top-[-5px] right-[-10px] rounded-full bg-white px-[9px] py-[1px] text-xs text-orange'>
+                  {purchaseInCart?.length}
+                </span>
               </Link>
             </Popover>
           </div>
