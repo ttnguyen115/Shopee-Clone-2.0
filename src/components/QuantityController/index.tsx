@@ -23,6 +23,7 @@ export default function QuantityController({
   onType,
   ...rest
 }: Props) {
+  const [localValue, setLocalValue] = React.useState<number>(Number(value || 0))
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value)
     if (!_.isUndefined(max) && _value > max) {
@@ -32,22 +33,25 @@ export default function QuantityController({
     }
 
     onType && onType(_value)
+    setLocalValue(_value)
   }
 
   const handleIncrease = () => {
-    let _value = Number(value) + 1
+    let _value = Number(value || localValue) + 1
     if (!_.isUndefined(max) && _value > max) {
       _value = max
     }
     onIncrease && onIncrease(_value)
+    setLocalValue(_value)
   }
 
   const handleDecrease = () => {
-    let _value = Number(value) - 1
+    let _value = Number(value || localValue) - 1
     if (_value < 1) {
       _value = 1
     }
     onDecrease && onDecrease(_value)
+    setLocalValue(_value)
   }
 
   return (
@@ -59,7 +63,7 @@ export default function QuantityController({
         <MinusSvg className='h-4 w-4' />
       </button>
       <NumberInputField
-        value={value}
+        value={value || localValue}
         onChange={handleChange}
         className=''
         classNameError='hidden'
