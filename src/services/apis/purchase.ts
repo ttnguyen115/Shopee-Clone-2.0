@@ -11,7 +11,7 @@ interface ProductBody {
 
 const purchaseApi = {
   addToCart(body: ProductBody) {
-    return http.post<SuccessResponse<Purchase>>(`${UrlPaths.URL_PURCHASES}/${UrlPaths.URL_ADD_TO_CART}`, body)
+    return http.post<SuccessResponse<Purchase>>(`${UrlPaths.URL_PURCHASES}${UrlPaths.URL_ADD_TO_CART}`, body)
   },
 
   getPurchases(params: { status: PurchaseListStatus }) {
@@ -21,11 +21,11 @@ const purchaseApi = {
   },
 
   buyProducts(body: ProductBody[]) {
-    return http.post<SuccessResponse<Purchase[]>>(UrlPaths.URL_BUY_PRODUCTS, body)
+    return http.post<SuccessResponse<Purchase[]>>(`${UrlPaths.URL_PURCHASES}${UrlPaths.URL_BUY_PRODUCTS}`, body)
   },
 
   updatePurchase(body: ProductBody) {
-    return http.put<SuccessResponse<Purchase>>(UrlPaths.URL_UPDATE_PURCHASE, body)
+    return http.put<SuccessResponse<Purchase>>(`${UrlPaths.URL_PURCHASES}${UrlPaths.URL_UPDATE_PURCHASE}`, body)
   },
 
   deletePurchase(purchaseIds: string[]) {

@@ -9,5 +9,5 @@ export const UrlPaths = {
   URL_PURCHASES: '/purchases',
   URL_ADD_TO_CART: '/add-to-cart',
   URL_BUY_PRODUCTS: '/buy-products',
-  URL_UPDATE_PURCHASE: '/update-purchase',
+  URL_UPDATE_PURCHASE: '/update-purchase'
 } as const
