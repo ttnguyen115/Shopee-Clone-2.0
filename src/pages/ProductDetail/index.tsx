@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -14,11 +14,11 @@ import type { Product, ProductListConfig } from 'src/types/product'
 import { toast } from 'react-toastify'
 import QuantityController from 'src/components/QuantityController'
 import { AppRoutes, PurchasesStatus, queryTime } from 'src/constants'
-import { queryClient } from 'src/main'
 import { productApi, purchaseApi } from 'src/services/apis'
 import { currencyFormatter, formatNumberToSocialStyle, getIdFromNameId, saleRate } from 'src/utils'
 
 export default function ProductDetail() {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
