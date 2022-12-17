@@ -4,8 +4,9 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
 
-import { CartLayout, MainLayout, RegisterLayout } from 'src/layouts'
-import { Cart, Login, ProductDetail, ProductList, Profile, Register } from 'src/pages'
+import { CartLayout, MainLayout, RegisterLayout, UserLayout } from 'src/layouts'
+import { Cart, Login, ProductDetail, ProductList, Register } from 'src/pages'
+import { ChangePassword, HistoryPurchase, Profile } from 'src/pages/User/pages'
 
 function ProtectedRoute() {
   const { isAuthenticated } = React.useContext(AppContext)
@@ -42,12 +43,26 @@ export default function useRouteElements() {
       element: <ProtectedRoute />,
       children: [
         {
-          path: AppRoutes.APP_PROFILE,
+          path: AppRoutes.APP_USER,
           element: (
             <MainLayout>
-              <Profile />
+              <UserLayout />
             </MainLayout>
-          )
+          ),
+          children: [
+            {
+              path: AppRoutes.APP_PROFILE,
+              element: <Profile />
+            },
+            {
+              path: AppRoutes.APP_CHANGE_PASSWORD,
+              element: <ChangePassword />
+            },
+            {
+              path: AppRoutes.APP_HISTORY_PURCHASE,
+              element: <HistoryPurchase />
+            }
+          ]
         },
         {
           path: AppRoutes.APP_CART,
