@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { produce } from 'immer'
 import _ from 'lodash'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import emptyCartPng from 'src/assets/img/empty-cart.png'
@@ -10,18 +10,16 @@ import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
 
 import { AppRoutes, PurchasesStatus } from 'src/constants'
+import { AppContext } from 'src/contexts/app'
 import { purchaseApi } from 'src/services/apis'
 import { currencyFormatter, generateNameId } from 'src/utils'
 
 import type { Purchase } from 'src/types/purchase'
 
-interface ExtendedPurchases extends Purchase {
-  disabled: boolean
-  checked: boolean
-}
-
 export default function Cart() {
-  const [extendedPurchases, setExtendedPurchases] = React.useState<ExtendedPurchases[]>([])
+  const { state } = useLocation()
+  const chosenPurchaseIdFromLocation = (state as { purchaseId: string } | null)?.purchaseId
+  const { extendedPurchases, setExtendedPurchases } = React.useContext(AppContext)
   const { data: purchasesInCartData, refetch } = useQuery({
     queryKey: ['purchases', { status: PurchasesStatus.IN_CART }],
     queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.IN_CART })
@@ -45,12 +43,19 @@ export default function Cart() {
     onSuccess: () => refetch()
   })
   const purchasesInCart = purchasesInCartData?.data.data
-  const isAllChecked = extendedPurchases.every((purchase) => purchase.checked)
-  const checkedPurchases = extendedPurchases.filter((purchase) => purchase.checked)
-  const totalCheckedPurchasePrice = _.sumBy(checkedPurchases, (purchase) => purchase.buy_count * purchase.price)
-  const totalCheckedPurchaseSavingPrice = _.sumBy(
-    checkedPurchases,
-    (purchase) => purchase.buy_count * (purchase.price_before_discount - purchase.price)
+  const isAllChecked = React.useMemo(() => extendedPurchases.every((purchase) => purchase.checked), [extendedPurchases])
+  const checkedPurchases = React.useMemo(
+    () => extendedPurchases.filter((purchase) => purchase.checked),
+    [extendedPurchases]
+  )
+  const totalCheckedPurchasePrice = React.useMemo(
+    () => _.sumBy(checkedPurchases, (purchase) => purchase.buy_count * purchase.price),
+    [checkedPurchases]
+  )
+  const totalCheckedPurchaseSavingPrice = React.useMemo(
+    () =>
+      _.sumBy(checkedPurchases, (purchase) => purchase.buy_count * (purchase.price_before_discount - purchase.price)),
+    [checkedPurchases]
   )
 
   React.useEffect(() => {
@@ -58,14 +63,23 @@ export default function Cart() {
       // => ['_id']: { _id: ..., name: ...,... }
       const extendedPurchaseObject = _.keyBy(prev, '_id')
       return (
-        purchasesInCart?.map((purchase) => ({
-          ...purchase,
-          disabled: false,
-          checked: Boolean(extendedPurchaseObject[purchase._id]?.checked)
-        })) || []
+        purchasesInCart?.map((purchase) => {
+          const isChosenPurchaseFromLocation = chosenPurchaseIdFromLocation === purchase._id
+          return {
+            ...purchase,
+            disabled: false,
+            checked: isChosenPurchaseFromLocation || Boolean(extendedPurchaseObject[purchase._id]?.checked)
+          }
+        }) || []
       )
     })
-  }, [purchasesInCart])
+  }, [purchasesInCart, chosenPurchaseIdFromLocation, setExtendedPurchases])
+
+  React.useEffect(() => {
+    return () => {
+      history.replaceState(null, '')
+    }
+  }, [])
 
   const handleCheckPurchase = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setExtendedPurchases(

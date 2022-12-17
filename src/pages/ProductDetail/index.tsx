@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { ReactComponent as AddToCartSvg } from 'src/assets/add-to-cart.svg'
 import { ReactComponent as ChevronLeftSvg } from 'src/assets/chevron-left.svg'
@@ -13,12 +13,13 @@ import type { Product, ProductListConfig } from 'src/types/product'
 
 import { toast } from 'react-toastify'
 import QuantityController from 'src/components/QuantityController'
-import { PurchasesStatus, queryTime } from 'src/constants'
+import { AppRoutes, PurchasesStatus, queryTime } from 'src/constants'
 import { queryClient } from 'src/main'
 import { productApi, purchaseApi } from 'src/services/apis'
 import { currencyFormatter, formatNumberToSocialStyle, getIdFromNameId, saleRate } from 'src/utils'
 
 export default function ProductDetail() {
+  const navigate = useNavigate()
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
   const imageRef = React.useRef<HTMLImageElement>(null)
@@ -114,6 +115,17 @@ export default function ProductDetail() {
     )
   }
 
+  const buyNow = async () => {
+    const {
+      data: { data: purchase }
+    } = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
+    navigate(AppRoutes.APP_CART, {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
+  }
+
   if (!product) return null
   const { name, rating, sold, price, price_before_discount, quantity, description } = product
 
@@ -206,7 +218,10 @@ export default function ProductDetail() {
                   <AddToCartSvg className='mr-[10px] h-5 w-5 fill-current stroke-orange text-orange' /> Thêm vào giỏ
                   hàng
                 </button>
-                <button className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                <button
+                  onClick={buyNow}
+                  className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                >
                   Mua ngay
                 </button>
               </div>
