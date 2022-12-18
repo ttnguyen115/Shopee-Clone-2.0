@@ -71,7 +71,11 @@ export default function NavHeader() {
           }
         >
           <div className='mr-2 h-6 w-6 flex-shrink-0'>
-            <UserCircleSvg />
+            {profile?.avatar ? (
+              <img src={profile.avatar} alt='avatar' className='h-full w-full rounded-full object-cover' />
+            ) : (
+              <UserCircleSvg />
+            )}
           </div>
           <div>{profile?.name || profile?.email}</div>
         </Popover>

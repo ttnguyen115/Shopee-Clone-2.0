@@ -1,4 +1,62 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+
+import { AppContext } from 'src/contexts/app'
+import { userApi } from 'src/services/apis'
+import { UserSchema, userSchema } from 'src/utils/rules'
+
+type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
+const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
+
 export default function Profile() {
+  const { setProfile } = React.useContext(AppContext)
+  const { data: profileData, refetch } = useQuery({
+    queryKey: ['profile'],
+    queryFn: userApi.getProfile
+  })
+  const profile = profileData?.data.data
+  const {
+    control,
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors }
+  } = useForm<FormData>({
+    defaultValues: {
+      name: '',
+      phone: '',
+      address: '',
+      date_of_birth: new Date(1990, 0, 1),
+      avatar: ''
+    },
+    resolver: yupResolver(profileSchema)
+  })
+  const updateProfileMutation = useMutation(userApi.updateProfile)
+
+  React.useEffect(() => {
+    if (profile) {
+      const { name, phone, address, date_of_birth, avatar } = profile
+      setValue('name', name)
+      setValue('phone', phone)
+      setValue('address', address)
+      setValue('date_of_birth', date_of_birth ? new Date(date_of_birth) : new Date(1990, 0, 1))
+      setValue('avatar', avatar)
+    }
+  }, [profile, setValue])
+
+  const onSubmit = handleSubmit(async (data) => {
+    const { data: response } = await updateProfileMutation.mutateAsync({
+      ...data,
+      date_of_birth: data.date_of_birth?.toISOString()
+    })
+    setProfile(response.data)
+    refetch()
+    toast.success(response.message)
+  })
+
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
       <div className='border-b border-b-gray-200 py-6'>

@@ -1,5 +1,5 @@
 import { clearLocalStorage, getAccessTokenFromLS, getProfileFromLS, setAccessTokenToLS, setProfileFromLS } from './auth'
-import { getRules, schema, Schema } from './rules'
+import { schema, Schema } from './rules'
 import {
   currencyFormatter,
   formatNumberToSocialStyle,
@@ -12,7 +12,6 @@ import {
 
 // export functions
 export {
-  getRules,
   isAxiosUnprocessableEntityError,
   isAxiosError,
   setAccessTokenToLS,

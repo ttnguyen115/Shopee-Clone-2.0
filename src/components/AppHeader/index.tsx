@@ -58,7 +58,7 @@ export default function AppHeader() {
             <Popover
               renderPopover={
                 <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
-                  { purchaseInCart && purchaseInCart.length > 0 ? (
+                  {purchaseInCart && purchaseInCart.length > 0 ? (
                     <div className='p-2'>
                       <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
                       <div className='mt-5'>
