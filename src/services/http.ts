@@ -2,7 +2,7 @@ import axios, { AxiosError, type AxiosInstance } from 'axios'
 import { toast } from 'react-toastify'
 import { HttpStatusCode } from 'src/constants'
 import type { AuthResponse } from 'src/types/auth'
-import { clearLocalStorage, getAccessTokenFromLS, setAccessTokenToLS, setProfileFromLS } from 'src/utils'
+import { clearLocalStorage, getAccessTokenFromLS, setAccessTokenToLS, setProfileToLS } from 'src/utils'
 import { UrlPaths } from './apis'
 
 class Http {
@@ -44,7 +44,7 @@ class Http {
           } = responseData
           this.accessToken = access_token
           setAccessTokenToLS(this.accessToken)
-          setProfileFromLS(user)
+          setProfileToLS(user)
         } else if (url === '/logout') {
           this.accessToken = ''
           clearLocalStorage()

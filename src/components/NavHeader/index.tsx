@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom'
 
 import { ReactComponent as ChevronDownSvg } from 'src/assets/chevron-down.svg'
 import { ReactComponent as GlobalSvg } from 'src/assets/global.svg'
-import { ReactComponent as UserCircleSvg } from 'src/assets/user-circle.svg'
 import Popover from 'src/components/Popover'
 
 import { AppRoutes, PurchasesStatus } from 'src/constants'
 
 import { AppContext } from 'src/contexts/app'
 import { authApi } from 'src/services/apis'
+import { getAvatarUrl } from 'src/utils'
 
 export default function NavHeader() {
   const queryClient = useQueryClient()
@@ -71,11 +71,7 @@ export default function NavHeader() {
           }
         >
           <div className='mr-2 h-6 w-6 flex-shrink-0'>
-            {profile?.avatar ? (
-              <img src={profile.avatar} alt='avatar' className='h-full w-full rounded-full object-cover' />
-            ) : (
-              <UserCircleSvg />
-            )}
+            <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
           </div>
           <div>{profile?.name || profile?.email}</div>
         </Popover>

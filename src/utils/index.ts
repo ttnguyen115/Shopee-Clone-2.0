@@ -1,9 +1,10 @@
-import { clearLocalStorage, getAccessTokenFromLS, getProfileFromLS, setAccessTokenToLS, setProfileFromLS } from './auth'
+import { clearLocalStorage, getAccessTokenFromLS, getProfileFromLS, setAccessTokenToLS, setProfileToLS } from './auth'
 import { schema, Schema } from './rules'
 import {
   currencyFormatter,
   formatNumberToSocialStyle,
   generateNameId,
+  getAvatarUrl,
   getIdFromNameId,
   isAxiosError,
   isAxiosUnprocessableEntityError,
@@ -18,12 +19,13 @@ export {
   clearLocalStorage,
   getAccessTokenFromLS,
   getProfileFromLS,
-  setProfileFromLS,
+  setProfileToLS,
   formatNumberToSocialStyle,
   currencyFormatter,
   saleRate,
   generateNameId,
-  getIdFromNameId
+  getIdFromNameId,
+  getAvatarUrl
 }
 // export variables
 export { schema }

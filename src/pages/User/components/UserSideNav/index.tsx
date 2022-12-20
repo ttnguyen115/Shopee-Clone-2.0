@@ -2,10 +2,9 @@ import clsx from 'clsx'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
-import userCircleSvg from 'src/assets/user-circle.svg'
-
 import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
+import { getAvatarUrl } from 'src/utils'
 
 export default function UserSideNav() {
   const { profile } = React.useContext(AppContext)
@@ -17,7 +16,7 @@ export default function UserSideNav() {
           to={AppRoutes.APP_PROFILE}
           className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10'
         >
-          <img src={profile?.avatar || userCircleSvg} alt='avatar' className='h-full w-full object-cover' />
+          <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full object-cover' />
         </Link>
         <div className='flex-grow pl-4'>
           <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.name || profile?.email}</div>

@@ -1,6 +1,8 @@
 import axios, { AxiosError } from 'axios'
 import { HttpStatusCode } from 'src/constants'
 
+import userCircleSvg from 'src/assets/user-circle.svg'
+
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   // eslint-disable-next-line import/no-named-as-default-member
   return axios.isAxiosError(error)
@@ -40,3 +42,6 @@ export const getIdFromNameId = (nameId: string): string => {
   const arr = nameId.split('-i,')
   return arr[arr.length - 1]
 }
+
+export const getAvatarUrl = (avatarName?: string): string =>
+  avatarName ? `${import.meta.env.VITE_BASE_URL}images/${avatarName}` : userCircleSvg
