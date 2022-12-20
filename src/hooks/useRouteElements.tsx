@@ -5,7 +5,7 @@ import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
 
 import { CartLayout, MainLayout, RegisterLayout, UserLayout } from 'src/layouts'
-import { Cart, Login, ProductDetail, ProductList, Register } from 'src/pages'
+import { Cart, Login, NotFound, ProductDetail, ProductList, Register } from 'src/pages'
 import { ChangePassword, HistoryPurchase, Profile } from 'src/pages/User/pages'
 
 function ProtectedRoute() {
@@ -95,6 +95,14 @@ export default function useRouteElements() {
           )
         }
       ]
+    },
+    {
+      path: '*',
+      element: (
+        <MainLayout>
+          <NotFound />
+        </MainLayout>
+      )
     }
   ])
 
