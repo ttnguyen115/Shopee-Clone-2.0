@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import _ from 'lodash'
+import omit from 'lodash/omit'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
@@ -35,7 +35,7 @@ export default function ChangePassword() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const res = await updateProfileMutation.mutateAsync(_.omit(data, ['confirm_password']))
+      const res = await updateProfileMutation.mutateAsync(omit(data, ['confirm_password']))
       toast.success(res.data.message)
       reset()
     } catch (error) {

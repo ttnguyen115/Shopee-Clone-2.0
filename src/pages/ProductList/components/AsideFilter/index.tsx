@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
-import _ from 'lodash'
+import omit from 'lodash/omit'
 import { useForm } from 'react-hook-form'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 
@@ -56,9 +56,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
   const handleRemoveAllFilters = () =>
     navigate({
       pathname: AppRoutes.APP_DEFAULT,
-      search: createSearchParams(
-        _.omit(queryConfig, ['price_min', 'price_max', 'rating_filter', 'category'])
-      ).toString()
+      search: createSearchParams(omit(queryConfig, ['price_min', 'price_max', 'rating_filter', 'category'])).toString()
     })
 
   return (

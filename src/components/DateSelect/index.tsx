@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import range from 'lodash/range'
 import React from 'react'
 
 interface Props {
@@ -48,7 +48,7 @@ export default function DateSelect({ errorMessage, value, onChange }: Props) {
             value={value?.getDate() || date.date}
           >
             <option disabled>Ngày</option>
-            {_.range(1, 32).map((item) => (
+            {range(1, 32).map((item) => (
               <option value={item} key={item}>
                 {item}
               </option>
@@ -61,7 +61,7 @@ export default function DateSelect({ errorMessage, value, onChange }: Props) {
             value={value?.getMonth() || date.month}
           >
             <option disabled>Tháng</option>
-            {_.range(0, 12).map((item) => (
+            {range(0, 12).map((item) => (
               <option value={item} key={item}>
                 {item + 1}
               </option>
@@ -74,7 +74,7 @@ export default function DateSelect({ errorMessage, value, onChange }: Props) {
             value={value?.getFullYear() || date.year}
           >
             <option disabled>Năm</option>
-            {_.range(1990, 2024).map((item) => (
+            {range(1990, 2024).map((item) => (
               <option value={item} key={item}>
                 {item}
               </option>

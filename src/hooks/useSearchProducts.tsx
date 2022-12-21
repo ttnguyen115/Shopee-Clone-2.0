@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import _ from 'lodash'
+import omit from 'lodash/omit'
 import { useForm } from 'react-hook-form'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 
@@ -22,7 +22,7 @@ export default function useSearchProducts() {
 
   const onSubmitSearch = handleSubmit((data) => {
     const config = queryConfig.order
-      ? _.omit(
+      ? omit(
           {
             ...queryConfig,
             name: data.name

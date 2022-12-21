@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import isUndefined from 'lodash/isUndefined'
 import React from 'react'
 
 import { ReactComponent as MinusSvg } from 'src/assets/minus.svg'
@@ -28,7 +28,7 @@ export default function QuantityController({
   const [localValue, setLocalValue] = React.useState<number>(Number(value || 0))
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value)
-    if (!_.isUndefined(max) && _value > max) {
+    if (!isUndefined(max) && _value > max) {
       _value = max
     } else if (_value < 1) {
       _value = 1
@@ -40,7 +40,7 @@ export default function QuantityController({
 
   const handleIncrease = () => {
     let _value = Number(value || localValue) + 1
-    if (!_.isUndefined(max) && _value > max) {
+    if (!isUndefined(max) && _value > max) {
       _value = max
     }
     onIncrease && onIncrease(_value)

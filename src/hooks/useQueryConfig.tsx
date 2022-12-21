@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import isUndefined from 'lodash/isUndefined'
+import omitBy from 'lodash/omitBy'
 import useQueryParams from 'src/hooks/useQueryParams'
 import type { ProductListConfig } from 'src/types/product'
 
@@ -20,7 +21,7 @@ export default function useQueryConfig(): QueryConfig {
     rating_filter,
     category
   } = queryParams
-  const queryConfig: QueryConfig = _.omitBy(
+  const queryConfig: QueryConfig = omitBy(
     {
       page,
       limit,
@@ -33,7 +34,7 @@ export default function useQueryConfig(): QueryConfig {
       rating_filter,
       category
     },
-    _.isUndefined
+    isUndefined
   )
 
   return queryConfig

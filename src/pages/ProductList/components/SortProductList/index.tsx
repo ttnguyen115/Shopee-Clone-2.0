@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import _ from 'lodash'
+import omit from 'lodash/omit'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 
 import { ReactComponent as ChevronLeftSvg } from 'src/assets/chevron-left.svg'
@@ -29,7 +29,7 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
     navigate({
       pathname: AppRoutes.APP_DEFAULT,
       search: createSearchParams(
-        _.omit(
+        omit(
           {
             ...queryConfig,
             sort_by: sortByValue

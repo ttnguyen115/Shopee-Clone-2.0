@@ -1,13 +1,13 @@
-import _ from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import * as yup from 'yup'
 import type { AnyObject } from 'yup/lib/types'
 
 function testPriceMinMax(this: yup.TestContext<AnyObject>) {
   const { price_min, price_max } = this.parent as { price_min: string; price_max: string }
-  if (!_.isEmpty(price_min) && !_.isEmpty(price_max)) {
+  if (!isEmpty(price_min) && !isEmpty(price_max)) {
     return Number(price_max) >= Number(price_min)
   }
-  return !_.isEmpty(price_min) || !_.isEmpty(price_max)
+  return !isEmpty(price_min) || !isEmpty(price_max)
 }
 
 const handleConfirmPasswordYup = (refString: string) => {

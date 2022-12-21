@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import React from 'react'
 
 export interface NumberInputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -25,7 +25,7 @@ const NumberInputField = React.forwardRef<HTMLInputElement, NumberInputFieldProp
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    if (NUMBER_REGEX.test(value) || _.isEmpty(value)) {
+    if (NUMBER_REGEX.test(value) || isEmpty(value)) {
       onChange && onChange(event)
       setLocalValue(value)
     }

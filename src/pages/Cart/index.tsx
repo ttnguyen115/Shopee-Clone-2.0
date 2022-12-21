@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { produce } from 'immer'
-import _ from 'lodash'
+import keyBy from 'lodash/keyBy'
+import sumBy from 'lodash/sumBy'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -49,19 +50,18 @@ export default function Cart() {
     [extendedPurchases]
   )
   const totalCheckedPurchasePrice = React.useMemo(
-    () => _.sumBy(checkedPurchases, (purchase) => purchase.buy_count * purchase.price),
+    () => sumBy(checkedPurchases, (purchase) => purchase.buy_count * purchase.price),
     [checkedPurchases]
   )
   const totalCheckedPurchaseSavingPrice = React.useMemo(
-    () =>
-      _.sumBy(checkedPurchases, (purchase) => purchase.buy_count * (purchase.price_before_discount - purchase.price)),
+    () => sumBy(checkedPurchases, (purchase) => purchase.buy_count * (purchase.price_before_discount - purchase.price)),
     [checkedPurchases]
   )
 
   React.useEffect(() => {
     setExtendedPurchases((prev) => {
       // => ['_id']: { _id: ..., name: ...,... }
-      const extendedPurchaseObject = _.keyBy(prev, '_id')
+      const extendedPurchaseObject = keyBy(prev, '_id')
       return (
         purchasesInCart?.map((purchase) => {
           const isChosenPurchaseFromLocation = chosenPurchaseIdFromLocation === purchase._id

@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import React from 'react'
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form'
 
@@ -31,7 +31,7 @@ export function InputFieldV2<
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value
-    const numberCondition = (type === 'number' && NUMBER_REGEX.test(inputValue)) || _.isEmpty(inputValue)
+    const numberCondition = (type === 'number' && NUMBER_REGEX.test(inputValue)) || isEmpty(inputValue)
 
     if (numberCondition || type !== 'number') {
       setLocalValue(inputValue)
