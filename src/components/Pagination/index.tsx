@@ -2,8 +2,7 @@ import clsx from 'clsx'
 import { createSearchParams, Link } from 'react-router-dom'
 
 import { AppRoutes } from 'src/constants'
-
-import { QueryConfig } from 'src/pages/ProductList/ProductList'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface Props {
   queryConfig: QueryConfig

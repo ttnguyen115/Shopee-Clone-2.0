@@ -4,7 +4,7 @@ import { ReactComponent as StarFilledSvg } from 'src/assets/star-filled.svg'
 import { ReactComponent as StarOutlinedSvg } from 'src/assets/star-outlined.svg'
 
 import { AppRoutes } from 'src/constants'
-import type { QueryConfig } from 'src/pages/ProductList'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface Props {
   queryConfig: QueryConfig

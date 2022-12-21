@@ -5,8 +5,17 @@ import { AppRoutes } from 'src/constants'
 import { AppContext } from 'src/contexts/app'
 
 import { CartLayout, MainLayout, RegisterLayout, UserLayout } from 'src/layouts'
-import { Cart, Login, NotFound, ProductDetail, ProductList, Register } from 'src/pages'
-import { ChangePassword, HistoryPurchase, Profile } from 'src/pages/User/pages'
+
+const Login = React.lazy(() => import('src/pages/Login'))
+const Register = React.lazy(() => import('src/pages/Register'))
+const Cart = React.lazy(() => import('src/pages/Cart'))
+const ProductDetail = React.lazy(() => import('src/pages/ProductDetail'))
+const ProductList = React.lazy(() => import('src/pages/ProductList'))
+const NotFound = React.lazy(() => import('src/pages/NotFound'))
+
+const ChangePassword = React.lazy(() => import('src/pages/User/pages/ChangePassword'))
+const HistoryPurchase = React.lazy(() => import('src/pages/User/pages/HistoryPurchase'))
+const Profile = React.lazy(() => import('src/pages/User/pages/Profile'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = React.useContext(AppContext)
@@ -25,7 +34,9 @@ export default function useRouteElements() {
       index: true,
       element: (
         <MainLayout>
-          <ProductList />
+          <React.Suspense>
+            <ProductList />
+          </React.Suspense>
         </MainLayout>
       )
     },
@@ -34,7 +45,9 @@ export default function useRouteElements() {
       index: true,
       element: (
         <MainLayout>
-          <ProductDetail />
+          <React.Suspense>
+            <ProductDetail />
+          </React.Suspense>
         </MainLayout>
       )
     },
@@ -46,21 +59,35 @@ export default function useRouteElements() {
           path: AppRoutes.APP_USER,
           element: (
             <MainLayout>
-              <UserLayout />
+              <React.Suspense>
+                <UserLayout />
+              </React.Suspense>
             </MainLayout>
           ),
           children: [
             {
               path: AppRoutes.APP_PROFILE,
-              element: <Profile />
+              element: (
+                <React.Suspense>
+                  <Profile />
+                </React.Suspense>
+              )
             },
             {
               path: AppRoutes.APP_CHANGE_PASSWORD,
-              element: <ChangePassword />
+              element: (
+                <React.Suspense>
+                  <ChangePassword />
+                </React.Suspense>
+              )
             },
             {
               path: AppRoutes.APP_HISTORY_PURCHASE,
-              element: <HistoryPurchase />
+              element: (
+                <React.Suspense>
+                  <HistoryPurchase />
+                </React.Suspense>
+              )
             }
           ]
         },
@@ -68,7 +95,9 @@ export default function useRouteElements() {
           path: AppRoutes.APP_CART,
           element: (
             <CartLayout>
-              <Cart />
+              <React.Suspense>
+                <Cart />
+              </React.Suspense>
             </CartLayout>
           )
         }
@@ -82,7 +111,9 @@ export default function useRouteElements() {
           path: AppRoutes.APP_LOGIN,
           element: (
             <RegisterLayout>
-              <Login />
+              <React.Suspense>
+                <Login />
+              </React.Suspense>
             </RegisterLayout>
           )
         },
