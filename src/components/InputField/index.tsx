@@ -20,7 +20,7 @@ export default function InputField({
   name,
   register,
   rules,
-  classNameInput = 'w-full border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm',
+  classNameInput = 'p-3 w-full border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm rounded-sm',
   classNameError = 'mt-1 min-h-[1.25rem] text-sm text-red-600',
   classNameEye = 'absolute top-[8px] right-[10px] h-5 w-5 cursor-pointer',
   ...rest
@@ -38,7 +38,7 @@ export default function InputField({
   }
 
   return (
-    <div className={className}>
+    <div className={'relative ' + className}>
       {rest.type === 'password' && visibleEye && <VisibleEyes className={classNameEye} onClick={toggleEyePassword} />}
       {rest.type === 'password' && !visibleEye && (
         <InvisibleEyes className={classNameEye} onClick={toggleEyePassword} />

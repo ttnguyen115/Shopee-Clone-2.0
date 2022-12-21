@@ -2,6 +2,8 @@ export const UrlPaths = {
   URL_REGISTER: '/register',
   URL_LOGIN: '/login',
   URL_LOGOUT: '/logout',
+  URL_REFRESH_TOKEN: '/refresh-access-token',
+
   URL_PROFILE: '/me',
   URL_USER: '/user',
   URL_UPLOAD_AVATAR: '/upload-avatar',

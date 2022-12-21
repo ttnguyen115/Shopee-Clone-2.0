@@ -84,6 +84,7 @@ export default function Register() {
                 className='mt-2'
                 errorMessage={errors?.password?.message}
                 autoComplete='on'
+                classNameEye='absolute right-[8px] h-5 w-5 cursor-pointer top-[12px]'
               />
               <InputField
                 name='confirm_password'
@@ -93,6 +94,7 @@ export default function Register() {
                 className='mt-2'
                 errorMessage={errors?.confirm_password?.message}
                 autoComplete='on'
+                classNameEye='absolute right-[8px] h-5 w-5 cursor-pointer top-[12px]'
               />
               <div className='mt-2'>
                 <Button

@@ -1,4 +1,12 @@
-import { clearLocalStorage, getAccessTokenFromLS, getProfileFromLS, setAccessTokenToLS, setProfileToLS } from './auth'
+import {
+  clearLocalStorage,
+  getAccessTokenFromLS,
+  getProfileFromLS,
+  getRefreshTokenFromLS,
+  setAccessTokenToLS,
+  setProfileToLS,
+  setRefreshTokenToLS
+} from './auth'
 import { schema, Schema } from './rules'
 import {
   currencyFormatter,
@@ -8,7 +16,9 @@ import {
   getIdFromNameId,
   isAxiosError,
   isAxiosUnprocessableEntityError,
-  saleRate
+  saleRate,
+  isAxiosUnauthorizedError,
+  isAxiosExpiredTokenError
 } from './utils'
 
 // export functions
@@ -25,7 +35,11 @@ export {
   saleRate,
   generateNameId,
   getIdFromNameId,
-  getAvatarUrl
+  getAvatarUrl,
+  setRefreshTokenToLS,
+  getRefreshTokenFromLS,
+  isAxiosUnauthorizedError,
+  isAxiosExpiredTokenError
 }
 // export variables
 export { schema }

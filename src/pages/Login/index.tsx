@@ -81,6 +81,7 @@ export default function Login() {
                 className='mt-2'
                 errorMessage={errors?.password?.message}
                 autoComplete='on'
+                classNameEye='absolute right-[8px] h-5 w-5 cursor-pointer top-[12px]'
               />
               <div className='mt-3'>
                 <Button
