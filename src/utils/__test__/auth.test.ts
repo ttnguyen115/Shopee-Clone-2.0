@@ -9,12 +9,11 @@ import {
   setRefreshTokenToLS
 } from '../auth'
 
-const access_token = 'Bearer access_token'
+const access_token = 'access_token'
 
-const refresh_token = 'Bearer refresh_token'
+const refresh_token = 'refresh_token'
 
-const profile =
-  '{"_id":"123","roles":["User"],"email":"t0@gmail.com","createdAt":"2000-12-02T14:07:03.484Z","updatedAt":"2000-12-20T15:35:31.933Z","__v":0,"address":"Vietnam","avatar":"abc.jpg","date_of_birth":"1900-07-02T17:00:00.000Z","name":"Jett Nguyen","phone":"0123123123"}'
+const profile = '{}'
 
 beforeEach(() => {
   localStorage.clear()
