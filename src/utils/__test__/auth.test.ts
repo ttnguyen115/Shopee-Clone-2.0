@@ -9,14 +9,12 @@ import {
   setRefreshTokenToLS
 } from '../auth'
 
-const access_token =
-  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGEwNjg3MmI3NWZmMjU0ODY1MjVhMiIsImVtYWlsIjoidGhhbmh0cnVuZzEwMTIwMDBAZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJjcmVhdGVkX2F0IjoiMjAyMi0xMi0yMVQwNTowODozMy42MDVaIiwiaWF0IjoxNjcxNTk5MzEzLCJleHAiOjE2NzIyMDQxMTN9.A5dXsVbktEefFAaiEf9ALtxMr3zNPMPRGDqS9aoYp4c'
+const access_token = 'Bearer access_token'
 
-const refresh_token =
-  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGEwNjg3MmI3NWZmMjU0ODY1MjVhMiIsImVtYWlsIjoidGhhbmh0cnVuZzEwMTIwMDBAZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJjcmVhdGVkX2F0IjoiMjAyMi0xMi0yMVQwNTowODozMy42MDVaIiwiaWF0IjoxNjcxNTk5MzEzLCJleHAiOjE2ODAyMzkzMTN9.GJdll48XyxwuS7ANF8KLd0_SljQd1L3r8sel5gcWqzw'
+const refresh_token = 'Bearer refresh_token'
 
 const profile =
-  '{"_id":"638a06872b75ff25486525a2","roles":["User"],"email":"thanhtrung1012000@gmail.com","createdAt":"2022-12-02T14:07:03.484Z","updatedAt":"2022-12-20T15:35:31.933Z","__v":0,"address":"17 TX25, P. 13, Q.12, TP.HCM","avatar":"a5612cd0-e5c3-4e57-8d0c-72fddac6aac1.jpg","date_of_birth":"1998-07-02T17:00:00.000Z","name":"Nguyen Thanh Trung","phone":"0123123123"}'
+  '{"_id":"123","roles":["User"],"email":"t0@gmail.com","createdAt":"2000-12-02T14:07:03.484Z","updatedAt":"2000-12-20T15:35:31.933Z","__v":0,"address":"Vietnam","avatar":"abc.jpg","date_of_birth":"1900-07-02T17:00:00.000Z","name":"Jett Nguyen","phone":"0123123123"}'
 
 beforeEach(() => {
   localStorage.clear()

@@ -26,7 +26,7 @@ import type { ErrorResponse } from 'src/types/utils'
 // Refresh token for me (success): 5 -> 6
 // Re-call me: 6 -> ...
 
-class Http {
+export class Http {
   instance: AxiosInstance
   private accessToken: string
   private refreshToken: string
