@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import omit from 'lodash/omit'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 
 import { ReactComponent as AsideFilterSvg } from 'src/assets/aside-filter.svg'
@@ -27,6 +28,7 @@ type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
 const priceSchema = schema.pick(['price_min', 'price_max'])
 
 export default function AsideFilter({ queryConfig, categories }: Props) {
+  const { t } = useTranslation('home')
   const { category } = queryConfig
   const navigate = useNavigate()
   const {
@@ -63,7 +65,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
     <div className='py-4'>
       <Link to={AppRoutes.APP_DEFAULT} className={clsx('flex items-center font-bold', !category && 'text-orange')}>
         <AsideFilterSvg />
-        <span className='ml-2'>Tất cả danh mục</span>
+        <span className='ml-2'>{t('aside filter.all categories')}</span>
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <ul>
@@ -90,7 +92,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       </ul>
       <Link to={AppRoutes.APP_DEFAULT} className='mt-4 flex items-center font-bold uppercase'>
         <SearchFilterSvg x={0} y={0} stroke='currentColor' />
-        <span className='ml-2'>Bộ lọc tìm kiếm</span>
+        <span className='ml-2'>{t('aside filter.filter search')}</span>
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>

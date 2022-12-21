@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import { ReactComponent as ChevronDownSvg } from 'src/assets/chevron-down.svg'
@@ -9,10 +10,13 @@ import Popover from 'src/components/Popover'
 import { AppRoutes, PurchasesStatus } from 'src/constants'
 
 import { AppContext } from 'src/contexts/app'
+import { locales } from 'src/i18n'
 import { authApi } from 'src/services/apis'
 import { getAvatarUrl } from 'src/utils'
 
 export default function NavHeader() {
+  const { i18n } = useTranslation()
+  const currentLanguage = locales[i18n.language as keyof typeof locales]
   const queryClient = useQueryClient()
   const { isAuthenticated, profile, setIsAuthenticated, setProfile } = React.useContext(AppContext)
 
@@ -24,7 +28,10 @@ export default function NavHeader() {
       queryClient.removeQueries({ queryKey: ['purchases', { status: PurchasesStatus.IN_CART }] })
     }
   })
+
   const handleLogout = () => logoutMutation.mutate()
+
+  const changeLanguage = (lng: string) => i18n.changeLanguage(lng)
 
   return (
     <div className='flex justify-end'>
@@ -34,14 +41,18 @@ export default function NavHeader() {
         renderPopover={
           <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
             <div className='flex flex-col py-2 px-3'>
-              <button className='py-2 px-3 hover:text-orange'>Tiếng Việt</button>
-              <button className='py-2 px-3 hover:text-orange'>English</button>
+              <button className='py-2 px-3 text-left hover:text-orange' onClick={() => changeLanguage('vi')}>
+                Tiếng Việt
+              </button>
+              <button className='py-2 px-3 hover:text-orange' onClick={() => changeLanguage('en')}>
+                English
+              </button>
             </div>
           </div>
         }
       >
         <GlobalSvg />
-        <span className='mx-1'>Tiếng Việt</span>
+        <span className='mx-1'>{currentLanguage}</span>
         <ChevronDownSvg />
       </Popover>
       {isAuthenticated && (
