@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { ReactComponent as AddToCartSvg } from 'src/assets/add-to-cart.svg'
@@ -11,6 +12,7 @@ import ProductItem from 'src/pages/ProductList/components/ProductItem'
 
 import type { Product, ProductListConfig } from 'src/types/product'
 
+import { convert } from 'html-to-text'
 import { toast } from 'react-toastify'
 import QuantityController from 'src/components/QuantityController'
 import { AppRoutes, PurchasesStatus, queryTime } from 'src/constants'
@@ -131,6 +133,17 @@ export default function ProductDetail() {
 
   return (
     <div className='bg-gray-200 py-6'>
+      <Helmet>
+        <title>{name} | Shopee Clone</title>
+        <meta
+          name='description'
+          content={convert(description, {
+            limits: {
+              maxInputLength: 150
+            }
+          })}
+        />
+      </Helmet>
       <div className='container'>
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
