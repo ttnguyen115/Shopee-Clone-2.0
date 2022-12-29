@@ -121,7 +121,9 @@ export default function useRouteElements() {
           path: AppRoutes.APP_REGISTER,
           element: (
             <RegisterLayout>
-              <Register />
+              <React.Suspense>
+                <Register />
+              </React.Suspense>
             </RegisterLayout>
           )
         }
@@ -131,7 +133,9 @@ export default function useRouteElements() {
       path: '*',
       element: (
         <MainLayout>
-          <NotFound />
+          <React.Suspense>
+            <NotFound />
+          </React.Suspense>
         </MainLayout>
       )
     }

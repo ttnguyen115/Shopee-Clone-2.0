@@ -15,11 +15,12 @@ import {
   getAvatarUrl,
   getIdFromNameId,
   isAxiosError,
-  isAxiosUnprocessableEntityError,
-  saleRate,
+  isAxiosExpiredTokenError,
   isAxiosUnauthorizedError,
-  isAxiosExpiredTokenError
+  isAxiosUnprocessableEntityError,
+  saleRate
 } from './utils'
+import { delay, logScreen, renderWithRouter } from './testUtils'
 
 // export functions
 export {
@@ -39,7 +40,10 @@ export {
   setRefreshTokenToLS,
   getRefreshTokenFromLS,
   isAxiosUnauthorizedError,
-  isAxiosExpiredTokenError
+  isAxiosExpiredTokenError,
+  delay,
+  logScreen,
+  renderWithRouter
 }
 // export variables
 export { schema }
